@@ -1,10 +1,11 @@
-import { Image } from '@/common/components/Image'
 import React from 'react'
+import { CustomImage } from '../../../../../components/common/CustomImage'
+import loginBackground from '@/assets/images/loginBackground.png'
 
 export const LoginImageBackground = () => {
   return (
     <div>
-      <Image src='' height={32} width={34} />
+      <CustomImage src={loginBackground} width={500} height={500} alt="Login Background" />
     </div>
   )
 }
