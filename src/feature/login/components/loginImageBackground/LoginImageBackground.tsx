@@ -1,11 +1,9 @@
 import React from 'react'
-import { CustomImage } from '../../../../../components/common/CustomImage'
 import loginBackground from '@/assets/images/loginBackground.png'
+import { CustomImage } from '@/components/common/CustomImage'
 
 export const LoginImageBackground = () => {
   return (
-    <div>
-      <CustomImage src={loginBackground} width={500} height={500} alt="Login Background" />
-    </div>
+    <CustomImage className="relative w-3xl h-screen" src={loginBackground} alt="Login Background" objectFit='cover'/>
   )
 }

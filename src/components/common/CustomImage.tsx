@@ -5,20 +5,14 @@ import React from 'react'
 interface ImageProps {
   src: StaticImageData
   alt?: string
-  width: number
-  height: number
   className?: string
+  objectFit: string
 }
 
-export const CustomImage = ({ src, alt, width, height, className }: ImageProps) => {
+export const CustomImage = ({ src, alt, className, objectFit }: ImageProps) => {
   return (
     <div className={className}>
-      <Image
-        src={src}
-        width={width}
-        height={height}
-        alt={alt || 'Image'}
-      />
+      <Image src={src} alt={alt || 'Image'} layout="fill" objectFit={objectFit} />
     </div>
   )
 }
