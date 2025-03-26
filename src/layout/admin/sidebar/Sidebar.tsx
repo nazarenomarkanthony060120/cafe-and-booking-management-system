@@ -2,18 +2,16 @@
 
 import React, { useState } from 'react';
 import { HiMenuAlt3 } from 'react-icons/hi';
-import { MdOutlineDashboard, MdLogout, MdOutlineChecklistRtl, MdOutlinePayments } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import { SidebarList } from './component/SidebarList';
+import schoolLogo from '@/assets/images/system_logo.png';
+import Image from 'next/image';
 
 
 const Sidebar = ({ setCurrentSection }: any) => {
     const router = useRouter();
-    const sidebars = [
-        { name: 'Dashboard', section: 'Dashboard', icon: MdOutlineDashboard },
-        { name: 'Reservation', section: 'Reservation', icon: MdOutlineChecklistRtl },
-        { name: 'Bills', section: 'Bills', icon: MdOutlinePayments },
-        { name: 'Logout', section: 'Logout', icon: MdLogout },
-    ];
+    const sidebars = SidebarList();
+    
 
     const [open, setOpen] = useState(true);
 
@@ -25,13 +23,24 @@ const Sidebar = ({ setCurrentSection }: any) => {
 
   return (
     <div className={`flex ${open ? 'w-72' : 'w-16'} bg-[#5041BC] text-white duration-500`}>
+        <div>
+            {sidebars.map((item, index) => (
+                <div key={index} onClick={() => setCurrentSection(item.section)}>
+                    <item.icon />
+                    {item.name}
+                </div>
+            ))}
+        </div>
         <div className={`fixed top-0 left-0 bottom-0 bg-[#5041BC] text-white ${open ? 'w-72' : 'w-16'} duration-500 px-4 overflow-hidden`}>
             <div className="flex justify-start py-3">       
                 <HiMenuAlt3 size={39} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
+            <div className="flex justify-center items-center h-30">
+                <Image src={schoolLogo} alt="School Logo" width={200} height={200} />
+            </div>
             <div className="border-t-2 border-white-500 w-full"></div>
             <div className={`flex justify-between p-3 ${open ? '' : 'hidden'}`}>
-                <span>sdsa</span>
+                <span>Admin</span>
             </div>  
             <div className="border-t-2 border-white-500 w-full"></div>
             <div className='mt-4 flex flex-col gap-4 relative'>

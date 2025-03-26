@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import Dashboard from '@/feature/admin/dashboard/Dashboard';
-import SideBarHeader from '@/feature/admin/header/header';
-import Sidebar from '@/feature/admin/sidebar/Sidebar';
+import SideBarHeader from '@/layout/admin/header/header';
+import Sidebar from '@/layout/admin/sidebar/Sidebar';
 import Reservation from '@/feature/admin/reservation/Reservation';
 import Bills from '@/feature/admin/bills/Bills';
 function DashboardPage() {
