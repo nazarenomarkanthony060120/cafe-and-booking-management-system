@@ -6,6 +6,6 @@ interface LoginLayoutProps {
 
 export const LoginLayout = ({ children }: LoginLayoutProps) => {
   return (
-    <div className='flex justify-between'>{children}</div>
+    <div className='flex h-screen bg-[#5844bc]'>{children}</div>
   )
 }
