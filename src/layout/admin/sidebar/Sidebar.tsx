@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { HiMenuAlt3 } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
 import { SidebarList } from './component/SidebarList';
@@ -8,7 +8,7 @@ import schoolLogo from '@/assets/images/system_logo.png';
 import Image from 'next/image';
 
 
-const Sidebar = ({ setCurrentSection }: any) => {
+const Sidebar = ({ setCurrentSection }: { setCurrentSection: Dispatch<SetStateAction<string>> }) => {
     const router = useRouter();
     const sidebars = SidebarList();
     
