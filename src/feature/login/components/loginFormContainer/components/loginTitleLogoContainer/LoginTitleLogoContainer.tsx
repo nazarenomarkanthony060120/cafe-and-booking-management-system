@@ -1,11 +1,11 @@
 import React from 'react'
-import { CustomImage } from '../../../../../../../components/common/CustomImage'
+import { CustomImage } from '@/components/common/CustomImage'
 import TitleLogo from '@/assets/images/titleLogo.png'
 
 const LoginTitleLogoContainer = () => {
   return (
     <div>
-      <CustomImage src={TitleLogo}/>
+      <CustomImage src={TitleLogo} width={240} height={100} objectFit="contain" />
     </div>
   )
 }
