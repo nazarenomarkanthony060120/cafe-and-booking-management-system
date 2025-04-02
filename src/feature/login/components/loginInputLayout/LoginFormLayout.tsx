@@ -5,7 +5,7 @@ interface LoginFormLayoutProps {
 }
 const LoginFormLayout = ({ children }: LoginFormLayoutProps) => {
   return (
-    <section className='relative w-[35%] p-20'>
+    <section className='relative w-[40%] p-20'>
       {children}
     </section>
   )

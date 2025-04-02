@@ -6,7 +6,6 @@ const LoginActionContainer = () => {
   return (
     <div className="flex gap-5 flex-col">
       <div className="flex justify-between w-full gap-2"> 
-        <p className={`${Inter_Font.className}`}>Forgot Password</p>
         <p className={`${Inter_Font.className} underline`}>Forgot Password</p>
       </div>
       <div className="grid grid-cols-2 w-full gap-2"> 
