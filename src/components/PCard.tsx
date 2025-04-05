@@ -9,7 +9,7 @@ interface PCCardProps {
 const PCard: React.FC<PCCardProps> = ({ id, status }) => {
   return (
     <div
-      className={`p-4 rounded-lg shadow-md flex flex-col justify-center w-75 h-[115px] 
+      className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] 
             ${
               status === "In-Use"
                 ? "bg-yellow-400 text-black"
@@ -23,7 +23,10 @@ const PCard: React.FC<PCCardProps> = ({ id, status }) => {
       </div>
 
       {/* Status Text */}
-      <p className="text-sm">{status}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm">{status}</p>
+        <a className="text-sm" href="#">View More</a>
+      </div>
     </div>
   );
 };
