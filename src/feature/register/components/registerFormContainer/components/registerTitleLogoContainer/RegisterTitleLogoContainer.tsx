@@ -2,7 +2,7 @@ import React from 'react'
 import { CustomImage } from '@/components/common/CustomImage'
 import TitleLogo from '@/assets/images/titleLogo.png'
 
-const LoginTitleLogoContainer = () => {
+const RegisterTitleLogoContainer = () => {
   return (
     <div>
       <CustomImage src={TitleLogo} objectFit="contain" />
@@ -10,4 +10,4 @@ const LoginTitleLogoContainer = () => {
   )
 }
 
-export default LoginTitleLogoContainer
+export default RegisterTitleLogoContainer
