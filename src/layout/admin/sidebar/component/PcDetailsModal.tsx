@@ -1,13 +1,13 @@
     import React from 'react';
 
-    interface ReservationModalProps {
+    interface PcDetailsModal {
     isOpen: boolean;
     onClose: () => void;
     id: number;
     status: string;
     }
 
-    const PcDetailsModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, id, status }) => {
+    const PcDetailsModal: React.FC<PcDetailsModal> = ({ isOpen, onClose, id, status }) => {
     if (!isOpen) return null;
 
     return (
