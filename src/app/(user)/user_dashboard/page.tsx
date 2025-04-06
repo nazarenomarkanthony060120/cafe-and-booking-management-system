@@ -6,7 +6,7 @@ import Reservation from '@/feature/user/reservation/Reservation';
 import SideBarHeader from '@/components/common/header';
 function DashboardPage() {
     
-  const [currentSection, setCurrentSection] = useState('Overview');
+  const [currentSection, setCurrentSection] = useState('Dashboard');
 
   const renderSection = () => {
     switch (currentSection) {

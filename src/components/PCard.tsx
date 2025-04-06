@@ -1,33 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import pcLogo from "@/assets/images/pc-icon.png";
 import Image from "next/image";
+import { Button } from "@/components/common/Button";
+import ReservationModal from "@/layout/user/sidebar/component/ReservationModal";
+import PcDetailsModal from "@/layout/admin/sidebar/component/PcDetailsModal";
+
 interface PCCardProps {
   id: number;
   status: string;
+  email: string;
 }
 
-const PCard: React.FC<PCCardProps> = ({ id, status }) => {
-  return (
-    <div
-      className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] 
-            ${
-              status === "In-Use"
-                ? "bg-yellow-400 text-black"
-                : "border border-gray-300 text-gray-800"
-            }
-        `}
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-xxl font-semibold">PC {id}</span>
-        <Image src={pcLogo} alt="School Logo" />
-      </div>
+const PCard: React.FC<PCCardProps> = ({ id, status, email }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-      {/* Status Text */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm">{status}</p>
-        <a className="text-sm" href="#">View More</a>
+  let statusClass = "";
+  let showViewButton = false;
+
+  if (status === "Available" && email !== "admin@email.com") {
+    statusClass = "border border-gray-300 text-gray-800";
+    showViewButton = true;
+  } else if (status === "Available" && email === "admin@email.com") {
+    statusClass = "border border-gray-300 text-gray-800";
+    showViewButton = true;
+  } else {
+    statusClass = "bg-yellow-400 text-black";
+    showViewButton = true;
+  }
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  return (
+    <>
+      <div
+        className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] ${statusClass}`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-xl font-semibold">PC {id}</span>
+          <Image src={pcLogo} alt="PC Icon" width={32} height={32} />
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm">{status}</p>
+          {showViewButton && status === "Available" && email !== "admin@email.com" && (
+            <>
+              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
+              <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+            </>
+          )}
+          {showViewButton && status === "Available" && email === "admin@email.com" && (
+            <>
+              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
+              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+            </>
+          )}
+          {showViewButton && status !== "Available" && email === "admin@email.com" && (
+            <>
+              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
+              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+            </>
+          )}          
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
