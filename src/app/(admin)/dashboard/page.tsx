@@ -7,7 +7,7 @@ import Reservation from '@/feature/admin/reservation/Reservation';
 import Bills from '@/feature/admin/bills/Bills';
 function DashboardPage() {
 
-  const [currentSection, setCurrentSection] = useState('Overview');
+  const [currentSection, setCurrentSection] = useState('Dashboard');
 
   const renderSection = () => {
     switch (currentSection) {
