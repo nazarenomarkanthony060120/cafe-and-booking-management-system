@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import PCard from "@/components/PCard";
 
 const pcs = [
@@ -23,7 +23,7 @@ const Dashboard = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

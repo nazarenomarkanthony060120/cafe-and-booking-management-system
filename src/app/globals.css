@@ -24,5 +24,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-passion-one), var(--font-inter), Arial, Helvetica, sans-serif; /* Ensure correct order */
+  font-family:
+    var(--font-passion-one), var(--font-inter), Arial, Helvetica, sans-serif; /* Ensure correct order */
 }

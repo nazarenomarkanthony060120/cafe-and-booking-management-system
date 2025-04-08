@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const SideBarHeader = ({title}: any) => {
-  return (
-    <div className='p-8 text-black flex items-center text-lg gap-116'>
-      <span className="text-[40px] font-bold">{title}</span>
-    </div> 
-  )
+interface SideBarHeaderProps {
+  title: string;
 }
 
-export default SideBarHeader
+const SideBarHeader = ({ title }: SideBarHeaderProps) => {
+  return (
+    <div className="p-8 text-black flex items-center text-lg gap-116">
+      <span className="text-[40px] font-bold">{title}</span>
+    </div>
+  );
+};
+
+export default SideBarHeader;

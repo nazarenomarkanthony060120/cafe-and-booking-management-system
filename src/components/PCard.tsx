@@ -43,24 +43,57 @@ const PCard: React.FC<PCCardProps> = ({ id, status, email }) => {
 
         <div className="flex items-center justify-between mt-2">
           <p className="text-sm">{status}</p>
-          {showViewButton && status === "Available" && email !== "admin@email.com" && (
-            <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
-            </>
-          )}
-          {showViewButton && status === "Available" && email === "admin@email.com" && (
-            <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
-            </>
-          )}
-          {showViewButton && status !== "Available" && email === "admin@email.com" && (
-            <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
-            </>
-          )}          
+          {showViewButton &&
+            status === "Available" &&
+            email !== "admin@email.com" && (
+              <>
+                <Button
+                  text="View More"
+                  className="text-sm text-gray-800 hover:underline transition"
+                  onClick={openModal}
+                />
+                <ReservationModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  id={id}
+                  status={status}
+                />
+              </>
+            )}
+          {showViewButton &&
+            status === "Available" &&
+            email === "admin@email.com" && (
+              <>
+                <Button
+                  text="View More"
+                  className="text-sm text-gray-800 hover:underline transition"
+                  onClick={openModal}
+                />
+                <PcDetailsModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  id={id}
+                  status={status}
+                />
+              </>
+            )}
+          {showViewButton &&
+            status !== "Available" &&
+            email === "admin@email.com" && (
+              <>
+                <Button
+                  text="View More"
+                  className="text-sm text-gray-800 hover:underline transition"
+                  onClick={openModal}
+                />
+                <PcDetailsModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  id={id}
+                  status={status}
+                />
+              </>
+            )}
         </div>
       </div>
     </>

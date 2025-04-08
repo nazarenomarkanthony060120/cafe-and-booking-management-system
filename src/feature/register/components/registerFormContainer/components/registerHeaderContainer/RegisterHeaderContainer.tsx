@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const RegisterHeaderContainer = () => {
-  return (
-    <div>RegisterHeaderContainer</div>
-  )
-}
+  return <div>RegisterHeaderContainer</div>;
+};
 
-export default RegisterHeaderContainer
+export default RegisterHeaderContainer;

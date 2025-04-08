@@ -4,16 +4,20 @@ import { Button } from "@/components/common/Button";
 import GroupReservationModal from "@/layout/user/sidebar/component/GroupReservationModal";
 
 const pcs = [
-  { id: 1, status: "Available", email: "bryanjames@libante"},
-  { id: 2, status: "Available", email: "bryanjames@libante"},
-  { id: 3, status: "Available", email: "bryanjames@libante"},
-  { id: 5, status: "Available", email: "bryanjames@libante"},
-  { id: 6, status: "Available", email: "bryanjames@libante"},
+  { id: 1, status: "Available", email: "bryanjames@libante" },
+  { id: 2, status: "Available", email: "bryanjames@libante" },
+  { id: 3, status: "Available", email: "bryanjames@libante" },
+  { id: 5, status: "Available", email: "bryanjames@libante" },
+  { id: 6, status: "Available", email: "bryanjames@libante" },
 ];
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPc, setSelectedPc] = useState<{ id: number; status: string; email: string } | null>(null);
+  const [selectedPc, setSelectedPc] = useState<{
+    id: number;
+    status: string;
+    email: string;
+  } | null>(null);
 
   const openModal = (pc: { id: number; status: string; email: string }) => {
     setSelectedPc(pc);
@@ -52,4 +56,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard
+export default Dashboard;

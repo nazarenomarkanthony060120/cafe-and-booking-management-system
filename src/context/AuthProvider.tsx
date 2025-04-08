@@ -1,23 +1,25 @@
-"use client";
+'use client'
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { createContext, useContext, useEffect, useState } from 'react'
+import { User, onAuthStateChanged } from 'firebase/auth'
+import { auth } from '@/lib/firebase'
 
-const AuthContext = createContext<{ user: User | null }>({ user: null });
+const AuthContext = createContext<{ user: User | null }>({ user: null })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null)
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     setUser(currentUser);
-  //   });
+  useEffect(() => {
+    if (!auth) return
 
-  //   return () => unsubscribe();
-  // }, []);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+    })
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
-};
+    return () => unsubscribe()
+  }, [])
 
-export const useAuth = () => useContext(AuthContext);
+  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+}
+
+export const useAuth = () => useContext(AuthContext)
