@@ -6,4 +6,8 @@
 
 ## Describe your change
 
+- [ ] Fix
+- [ ] Bug
+- [ ] Add new
+
 ## UI before/after
