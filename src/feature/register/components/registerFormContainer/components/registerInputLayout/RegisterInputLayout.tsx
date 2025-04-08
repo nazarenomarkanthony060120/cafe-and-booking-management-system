@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
 interface RegisterInputLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 const RegisterInputLayout = ({ children }: RegisterInputLayoutProps) => {
-  return <div className="p-6">{children}</div>;
-};
+  return <div className="p-6">{children}</div>
+}
 
-export default RegisterInputLayout;
+export default RegisterInputLayout

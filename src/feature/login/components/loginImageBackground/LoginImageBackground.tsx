@@ -1,6 +1,6 @@
-import React from "react";
-import loginBackground from "@/assets/images/loginBackground.png";
-import { CustomImage } from "@/components/common/CustomImage";
+import React from 'react'
+import loginBackground from '@/assets/images/loginBackground.png'
+import { CustomImage } from '@/components/common/CustomImage'
 
 export const LoginImageBackground = () => {
   return (
@@ -10,5 +10,5 @@ export const LoginImageBackground = () => {
       alt="Login Background"
       objectFit="cover"
     />
-  );
-};
+  )
+}

@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react'
 
-type ButtonType = "submit" | "reset" | "button" | undefined;
+type ButtonType = 'submit' | 'reset' | 'button' | undefined
 
 interface ButtonProps {
-  className?: string;
-  text: string;
-  type?: ButtonType;
-  onClick?: () => void;
+  className?: string
+  text: string
+  type?: ButtonType
+  onClick?: () => void
 }
 
 export const Button = ({ className, text, type, onClick }: ButtonProps) => {
@@ -16,5 +16,5 @@ export const Button = ({ className, text, type, onClick }: ButtonProps) => {
         {text}
       </button>
     </div>
-  );
-};
+  )
+}
