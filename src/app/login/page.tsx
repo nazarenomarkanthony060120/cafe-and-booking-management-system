@@ -1,6 +1,7 @@
+'use client'
 import { Login } from '@/feature/login/Login'
 
-function LoginPage () {
+function LoginPage() {
   return <Login />
 }
 

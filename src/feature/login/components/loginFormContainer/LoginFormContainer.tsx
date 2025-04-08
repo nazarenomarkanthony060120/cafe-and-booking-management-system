@@ -14,6 +14,5 @@ export const LoginFormContainer = () => {
         <LoginInputFormContainer />
       </LoginInputLayout>
     </LoginFormLayout>
-    
   )
 }

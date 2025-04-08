@@ -9,7 +9,7 @@ interface InputProps {
   type: string
 }
 
-const Input = ({text, className, placeHolder, type, required = false}: InputProps) => {
+const Input = ({ text, className, placeHolder, type, required = false }: InputProps) => {
   return (
     <div>
       <label className={`${Inter_Font.className} block text-sm font-normal`}>{text}</label>

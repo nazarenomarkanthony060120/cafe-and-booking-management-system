@@ -4,6 +4,11 @@ import { CustomImage } from '@/components/common/CustomImage'
 
 export const LoginImageBackground = () => {
   return (
-    <CustomImage className="relative w-3xl" src={loginBackground} alt="Login Background" objectFit='cover'/>
+    <CustomImage
+      className="relative w-3xl"
+      src={loginBackground}
+      alt="Login Background"
+      objectFit="cover"
+    />
   )
 }

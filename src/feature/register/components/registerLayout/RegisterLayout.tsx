@@ -5,7 +5,5 @@ interface LoginLayoutProps {
 }
 
 export const RegisterLayout = ({ children }: LoginLayoutProps) => {
-  return (
-    <div className='flex h-screen bg-[#5844bc]'>{children}</div>
-  )
+  return <div className="flex h-screen bg-[#5844bc]">{children}</div>
 }

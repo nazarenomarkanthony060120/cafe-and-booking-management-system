@@ -1,10 +1,9 @@
 'use client'
 import React, { useState } from 'react'
-import Dashboard from '@/feature/admin/dashboard/Dashboard'
+import Dashboard from '@/feature/user/dashboard/Dashboard'
+import UserSidebar from '@/layout/user/sidebar/UserSidebar'
+import Reservation from '@/feature/user/reservation/Reservation'
 import SideBarHeader from '@/components/common/header'
-import Sidebar from '@/layout/admin/sidebar/Sidebar'
-import Reservation from '@/feature/admin/reservation/Reservation'
-import Bills from '@/feature/admin/bills/Bills'
 function DashboardPage() {
   const [currentSection, setCurrentSection] = useState('Dashboard')
 
@@ -14,8 +13,6 @@ function DashboardPage() {
         return <Dashboard />
       case 'Reservation':
         return <Reservation />
-      case 'Bills':
-        return <Bills />
       default:
         return null
     }
@@ -24,10 +21,10 @@ function DashboardPage() {
   return (
     <div className="bg-white min-h-screen flex">
       <div className="relative">
-        <Sidebar setCurrentSection={setCurrentSection} />
+        <UserSidebar setCurrentSection={setCurrentSection} />
       </div>
       <div className="w-full min-h-screen text-black">
-        <SideBarHeader title={currentSection} />
+        <SideBarHeader title={`${currentSection}`} />
         {renderSection()}
       </div>
     </div>

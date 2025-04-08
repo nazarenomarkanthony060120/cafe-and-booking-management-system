@@ -1,26 +1,30 @@
-import React, { useState } from "react";
-import PCard from "@/components/PCard";
-import { Button } from "@/components/common/Button";
-import GroupReservationModal from "@/layout/user/sidebar/component/GroupReservationModal";
+import React, { useState } from 'react'
+import PCard from '@/components/PCard'
+import { Button } from '@/components/common/Button'
+import GroupReservationModal from '@/layout/user/sidebar/component/GroupReservationModal'
 
 const pcs = [
-  { id: 1, status: "Available", email: "bryanjames@libante"},
-  { id: 2, status: "Available", email: "bryanjames@libante"},
-  { id: 3, status: "Available", email: "bryanjames@libante"},
-  { id: 5, status: "Available", email: "bryanjames@libante"},
-  { id: 6, status: "Available", email: "bryanjames@libante"},
-];
+  { id: 1, status: 'Available', email: 'bryanjames@libante' },
+  { id: 2, status: 'Available', email: 'bryanjames@libante' },
+  { id: 3, status: 'Available', email: 'bryanjames@libante' },
+  { id: 5, status: 'Available', email: 'bryanjames@libante' },
+  { id: 6, status: 'Available', email: 'bryanjames@libante' },
+]
 
 const Dashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPc, setSelectedPc] = useState<{ id: number; status: string; email: string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedPc, setSelectedPc] = useState<{
+    id: number
+    status: string
+    email: string
+  } | null>(null)
 
   const openModal = (pc: { id: number; status: string; email: string }) => {
-    setSelectedPc(pc);
-    setIsModalOpen(true);
-  };
+    setSelectedPc(pc)
+    setIsModalOpen(true)
+  }
 
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <div className="p-6 w-full">
@@ -49,7 +53,7 @@ const Dashboard = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Dashboard

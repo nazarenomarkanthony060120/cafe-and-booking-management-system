@@ -1,6 +1,7 @@
-import Register  from '@/feature/register/Register'
+'use client'
+import { Register } from '@/feature/register/Register'
 
-function RegisterPage () {
+function RegisterPage() {
   return <Register />
 }
 

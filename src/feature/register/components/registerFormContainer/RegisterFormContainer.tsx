@@ -15,6 +15,5 @@ export const RegisterFormContainer = () => {
         <RegisterInputFormContainer />
       </RegisterInputLayout>
     </RegisterFormLayout>
-    
   )
 }

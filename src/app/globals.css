@@ -1,10 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-passion-one: "Passion One", sans-serif; /* Define it first */
-  --font-inter: "Inter", sans-serif;
+  --font-passion-one: 'Passion One', sans-serif; /* Define it first */
+  --font-inter: 'Inter', sans-serif;
 }
 
 @theme inline {
@@ -24,5 +24,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-passion-one), var(--font-inter), Arial, Helvetica, sans-serif; /* Ensure correct order */
+  font-family:
+    var(--font-passion-one), var(--font-inter), Arial, Helvetica, sans-serif; /* Ensure correct order */
 }

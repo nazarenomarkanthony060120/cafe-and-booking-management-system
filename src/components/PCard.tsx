@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import pcLogo from "@/assets/images/pc-icon.png";
-import Image from "next/image";
-import { Button } from "@/components/common/Button";
-import ReservationModal from "@/layout/user/sidebar/component/ReservationModal";
-import PcDetailsModal from "@/layout/admin/sidebar/component/PcDetailsModal";
+import React, { useState } from 'react'
+import pcLogo from '@/assets/images/pc-icon.png'
+import Image from 'next/image'
+import { Button } from '@/components/common/Button'
+import ReservationModal from '@/layout/user/sidebar/component/ReservationModal'
+import PcDetailsModal from '@/layout/admin/sidebar/component/PcDetailsModal'
 
 interface PCCardProps {
-  id: number;
-  status: string;
-  email: string;
+  id: number
+  status: string
+  email: string
 }
 
 const PCard: React.FC<PCCardProps> = ({ id, status, email }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  let statusClass = "";
-  let showViewButton = false;
+  let statusClass = ''
+  let showViewButton = false
 
-  if (status === "Available" && email !== "admin@email.com") {
-    statusClass = "border border-gray-300 text-gray-800";
-    showViewButton = true;
-  } else if (status === "Available" && email === "admin@email.com") {
-    statusClass = "border border-gray-300 text-gray-800";
-    showViewButton = true;
+  if (status === 'Available' && email !== 'admin@email.com') {
+    statusClass = 'border border-gray-300 text-gray-800'
+    showViewButton = true
+  } else if (status === 'Available' && email === 'admin@email.com') {
+    statusClass = 'border border-gray-300 text-gray-800'
+    showViewButton = true
   } else {
-    statusClass = "bg-yellow-400 text-black";
-    showViewButton = true;
+    statusClass = 'bg-yellow-400 text-black'
+    showViewButton = true
   }
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <>
@@ -43,28 +43,40 @@ const PCard: React.FC<PCCardProps> = ({ id, status, email }) => {
 
         <div className="flex items-center justify-between mt-2">
           <p className="text-sm">{status}</p>
-          {showViewButton && status === "Available" && email !== "admin@email.com" && (
+          {showViewButton && status === 'Available' && email !== 'admin@email.com' && (
             <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+              <Button
+                text="View More"
+                className="text-sm text-gray-800 hover:underline transition"
+                onClick={openModal}
+              />
+              <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
             </>
           )}
-          {showViewButton && status === "Available" && email === "admin@email.com" && (
+          {showViewButton && status === 'Available' && email === 'admin@email.com' && (
             <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+              <Button
+                text="View More"
+                className="text-sm text-gray-800 hover:underline transition"
+                onClick={openModal}
+              />
+              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
             </>
           )}
-          {showViewButton && status !== "Available" && email === "admin@email.com" && (
+          {showViewButton && status !== 'Available' && email === 'admin@email.com' && (
             <>
-              <Button text="View More" className="text-sm text-gray-800 hover:underline transition" onClick={openModal}/>
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status}/>
+              <Button
+                text="View More"
+                className="text-sm text-gray-800 hover:underline transition"
+                onClick={openModal}
+              />
+              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
             </>
-          )}          
+          )}
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PCard;
+export default PCard

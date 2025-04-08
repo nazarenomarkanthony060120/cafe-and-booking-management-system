@@ -12,12 +12,7 @@ interface ImageProps {
 export const CustomImage = ({ src, alt, className, objectFit }: ImageProps) => {
   return (
     <div className={`relative ${className}`}>
-      <Image
-        src={src}
-        alt={alt || 'Image'}
-        layout="fill"
-        objectFit={objectFit}
-      />
+      <Image src={src} alt={alt || 'Image'} layout="fill" objectFit={objectFit} />
     </div>
   )
 }
