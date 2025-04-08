@@ -1,5 +1,5 @@
-##E Butang dri ang imong maka baling nga changes
-##Arn atong basahon tagsa2 ohyeah
+## E Butang dri ang imong maka baling nga changes
+## Arn atong basahon tagsa2 ohyeah
 
 ## Cafe and Booking Management System
 
