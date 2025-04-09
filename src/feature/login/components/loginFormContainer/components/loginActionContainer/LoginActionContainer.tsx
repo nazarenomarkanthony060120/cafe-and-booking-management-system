@@ -1,5 +1,6 @@
 import { Inter_Font } from '@/assets/fonts/Fonts'
 import { Button } from '@/components/common/Button'
+import Link from 'next/link'
 import React from 'react'
 
 const LoginActionContainer = () => {
@@ -14,10 +15,15 @@ const LoginActionContainer = () => {
           className={`${Inter_Font.className} w-full text-sm bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 bg-gradient-to-l from-[#FB6564] to-[#A03CEA]`}
           type="submit"
         />
-        <Button
-          text="Register"
-          className={`${Inter_Font.className} w-full text-sm bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700`}
-        />
+        <Link
+          href="/register"
+          className={`${Inter_Font.className} text-xs text-white hover:underline`}
+        >
+          <Button
+            text="Register"
+            className={`${Inter_Font.className} w-full text-sm bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700`}
+          />
+        </Link>
       </div>
     </div>
   )
