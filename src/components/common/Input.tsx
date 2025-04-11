@@ -21,6 +21,7 @@ const Input = ({
   value,
   onChange,
   errors,
+  ...rest
 }: InputProps) => {
   return (
     <div>
@@ -32,6 +33,7 @@ const Input = ({
         onChange={onChange}
         placeholder={placeHolder}
         required={required}
+        {...rest}
       />
       {errors && <p className="text-red-500 text-sm">{errors}</p>}
     </div>

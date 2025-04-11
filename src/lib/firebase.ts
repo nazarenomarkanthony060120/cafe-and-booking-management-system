@@ -41,5 +41,5 @@ export {
   getDoc,
   updateDoc,
   deleteDoc,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
 }
