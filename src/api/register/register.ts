@@ -1,8 +1,7 @@
-import { addDoc, auth, collection, createUserWithEmailAndPassword, db } from '@/lib/firebase'
+import { auth, createUserWithEmailAndPassword, db, doc, setDoc } from '@/lib/firebase'
 import { RegisterFormValues } from '@/types/types'
 
 export const registerUser = async (data: RegisterFormValues) => {
-  console.log(data)
   return await createUserWithEmailAndPassword(auth, data.email, data.password)
     .then((userCredential) => {
       const user = userCredential.user
@@ -17,8 +16,7 @@ export const registerUser = async (data: RegisterFormValues) => {
 }
 
 const addUser = async (user: RegisterFormValues, uid: string) => {
-  return await addDoc(collection(db, 'users'), {
-    uid: uid,
+  return await setDoc(doc(db, 'users', uid), {
     ...user,
     ctype: 'user',
     createdAt: new Date().toISOString(),
