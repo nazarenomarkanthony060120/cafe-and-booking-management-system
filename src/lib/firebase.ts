@@ -11,6 +11,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  query,
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -43,4 +44,5 @@ export {
   deleteDoc,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  query,
 }

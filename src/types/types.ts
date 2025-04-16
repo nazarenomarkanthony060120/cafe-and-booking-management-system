@@ -9,3 +9,14 @@ export type LoginFormValues = {
   email: string
   password: string
 }
+
+export type AddPcFormValues = {
+  pcNumber: string
+}
+
+export type PcData = {
+  id: string
+  pcNumber: string
+  status: string
+  email: string
+}
