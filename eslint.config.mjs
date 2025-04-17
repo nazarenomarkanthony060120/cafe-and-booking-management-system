@@ -1,7 +1,6 @@
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { FlatCompat } from '@eslint/eslintrc'
-import noUnusedImports from 'eslint-plugin-no-unused-imports'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -14,9 +13,6 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
 
   {
-    plugins: {
-      'no-unused-imports': noUnusedImports,
-    },
     extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
     parserOptions: {
       ecmaVersion: 2020,
