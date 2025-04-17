@@ -11,7 +11,7 @@ interface PCCardProps {
   email: string
 }
 
-const PCard: React.FC<PCCardProps> = ({ id, status, email }) => {
+const PCard = ({ id, status, email }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
