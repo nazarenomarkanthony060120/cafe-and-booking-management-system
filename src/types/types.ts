@@ -21,3 +21,11 @@ export type PcData = {
   status: string
   email: string
 }
+
+export type UserData = {
+  id: string
+  ctype: string
+  email: string
+  name: string
+  contactNumber: string
+}

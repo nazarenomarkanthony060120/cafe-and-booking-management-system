@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import pcLogo from '@/assets/images/pc-icon.png'
 import Image from 'next/image'
 import { Button } from '@/components/common/Button'
-import ReservationModal from '@/layout/user/sidebar/component/ReservationModal'
 import PcDetailsModal from '@/layout/admin/sidebar/component/PcDetailsModal'
+import { ReservationModal } from '@/layout/user/sidebar/component/ReservationModal'
 
 interface PCCardProps {
   id: number
@@ -13,7 +13,6 @@ interface PCCardProps {
 
 const PCard = ({ id, status, email }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   let statusClass = ''
   let showViewButton = false
 
@@ -33,9 +32,7 @@ const PCard = ({ id, status, email }: PCCardProps) => {
 
   return (
     <>
-      <div
-        className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] ${statusClass}`}
-      >
+      <div className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] ${statusClass}`}>
         <div className="flex items-center justify-between">
           <span className="text-xl font-semibold">PC {id}</span>
           <Image src={pcLogo} alt="PC Icon" width={32} height={32} />
@@ -74,7 +71,7 @@ const PCard = ({ id, status, email }: PCCardProps) => {
             </>
           )}
         </div>
-      </div>
+      </div >
     </>
   )
 }
