@@ -66,7 +66,13 @@ const PCard = ({ id, status, email, source, pcNumber }: PCCardProps) => {
               {source !== 'walk-in' ? (
                 <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
               ) : (
-                <WalkInCustomerModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} pcNumber={pcNumber} />
+                <WalkInCustomerModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  id={id}
+                  status={status}
+                  pcNumber={pcNumber}
+                />
               )}
             </>
           )}

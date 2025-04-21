@@ -17,7 +17,7 @@ function DashboardPage() {
       case 'Walk-in Customer':
         return <WalkInCustomer />
       case 'Customer List':
-        return <CustomerList />;
+        return <CustomerList />
       case 'Reservation':
         return <Reservation />
       case 'Bills':

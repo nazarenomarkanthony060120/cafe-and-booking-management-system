@@ -28,4 +28,6 @@ export type WalkInCustomerData = {
   name: string
   email: string
   contactNumber: string
+  created_date: string
+  updated_date: string
 }

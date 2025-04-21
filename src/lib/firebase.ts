@@ -44,5 +44,6 @@ export {
   deleteDoc,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  query, getAuth,
+  query,
+  getAuth,
 }

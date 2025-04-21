@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '@/api/api'
 import GroupReservationModal from '@/layout/user/sidebar/component/GroupReservationModal'
 
-
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedPc, setSelectedPc] = useState<{
@@ -20,7 +19,7 @@ const Dashboard = () => {
   })
 
   // Filter PCs to show only available ones
-  const availablePcs = pcs.filter(pc => pc.status === 'Available')
+  const availablePcs = pcs.filter((pc) => pc.status === 'Available')
 
   const openModal = (pc: { id: number; status: string; email: string }) => {
     setSelectedPc(pc)
@@ -36,11 +35,13 @@ const Dashboard = () => {
         <Button
           text="Group Reservation"
           className="px-5 py-2 text-lg text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xl transition-all duration-300"
-          onClick={() => openModal({
-            id: parseInt(availablePcs[0].pcNumber),
-            status: availablePcs[0].status,
-            email: availablePcs[0].email
-          })}
+          onClick={() =>
+            openModal({
+              id: parseInt(availablePcs[0].pcNumber),
+              status: availablePcs[0].status,
+              email: availablePcs[0].email,
+            })
+          }
         />
         {selectedPc && (
           <GroupReservationModal
