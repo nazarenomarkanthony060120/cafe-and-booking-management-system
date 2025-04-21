@@ -4,24 +4,26 @@ import Image from 'next/image'
 import { Button } from '@/components/common/Button'
 import ReservationModal from '@/layout/user/sidebar/component/ReservationModal'
 import PcDetailsModal from '@/layout/admin/sidebar/component/PcDetailsModal'
+import WalkInCustomerModal from '@/layout/admin/sidebar/component/WalkInCustomerModal'
 
 interface PCCardProps {
   id: number
   status: string
   email: string
+  source?: string
 }
 
-const PCard = ({ id, status, email }: PCCardProps) => {
+const PCard = ({ id, status, email, source }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
   let showViewButton = false
 
   if (status === 'Available' && email !== 'admin@email.com') {
-    statusClass = 'border border-gray-300 text-gray-800'
+    statusClass = 'border border-red-300 text-gray-800'
     showViewButton = true
   } else if (status === 'Available' && email === 'admin@email.com') {
-    statusClass = 'border border-gray-300 text-gray-800'
+    statusClass = 'border border-blue-300 text-gray-800'
     showViewButton = true
   } else {
     statusClass = 'bg-yellow-400 text-black'
@@ -47,7 +49,7 @@ const PCard = ({ id, status, email }: PCCardProps) => {
             <>
               <Button
                 text="View More"
-                className="text-sm text-gray-800 hover:underline transition"
+                className="text-sm text-red-800 hover:underline transition"
                 onClick={openModal}
               />
               <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
@@ -57,10 +59,14 @@ const PCard = ({ id, status, email }: PCCardProps) => {
             <>
               <Button
                 text="View More"
-                className="text-sm text-gray-800 hover:underline transition"
+                className="text-sm text-blue-800 hover:underline transition"
                 onClick={openModal}
               />
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+              {source !== 'walk-in' ? (
+                <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+              ) : (
+                <WalkInCustomerModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+              )}
             </>
           )}
           {showViewButton && status !== 'Available' && email === 'admin@email.com' && (

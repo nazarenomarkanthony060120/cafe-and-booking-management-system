@@ -10,7 +10,7 @@ export const addPcAdmin = async (data: AddPcFormValues) => {
     const pcData = {
       pcNumber: data.pcNumber,
       status: 'Available',
-      email: currentUser.email,
+      email: 'admin@email.com',
       uid: currentUser.uid,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

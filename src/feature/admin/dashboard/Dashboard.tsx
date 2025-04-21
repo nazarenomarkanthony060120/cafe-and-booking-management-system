@@ -35,7 +35,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {pcs
           .slice()
-          .sort((a, b) => parseInt(a.pcNumber) - parseInt(b.pcNumber))
+          .sort((a, b) => parseInt(b.pcNumber) - parseInt(a.pcNumber))
           .map((pc) => (
             <PCard key={pc.id} id={parseInt(pc.pcNumber)} status={pc.status} email={pc.email} />
           ))}
