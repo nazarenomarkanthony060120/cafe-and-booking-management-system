@@ -45,4 +45,5 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   query,
+  getAuth,
 }

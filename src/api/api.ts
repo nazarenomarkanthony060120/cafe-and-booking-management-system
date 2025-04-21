@@ -2,6 +2,7 @@ import { registerUser } from './register/register'
 import { login } from './login/login'
 import { addPcAdmin, isPcNumberTaken } from './addPcAdmin/addPcAdmin'
 import { getPcList } from './addPcAdmin/getPcList'
+import { addWalkInData } from './addWalkInData/addWalkInData'
 
 export const api = {
   register: registerUser,
@@ -9,4 +10,5 @@ export const api = {
   addPcAdmin: addPcAdmin,
   getPcList: getPcList,
   isPcNumberTaken: isPcNumberTaken,
+  addWalkInData: addWalkInData,
 }

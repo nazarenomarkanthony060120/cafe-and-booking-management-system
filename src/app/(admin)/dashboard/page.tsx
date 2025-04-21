@@ -5,6 +5,8 @@ import SideBarHeader from '@/components/common/header'
 import Sidebar from '@/layout/admin/sidebar/Sidebar'
 import Reservation from '@/feature/admin/reservation/Reservation'
 import Bills from '@/feature/admin/bills/Bills'
+import CustomerList from '@/feature/admin/customerList/CustomerList'
+import WalkInCustomer from '@/feature/admin/walkInCustomer/WalkInCustomer'
 function DashboardPage() {
   const [currentSection, setCurrentSection] = useState('Dashboard')
 
@@ -12,6 +14,10 @@ function DashboardPage() {
     switch (currentSection) {
       case 'Dashboard':
         return <Dashboard />
+      case 'Walk-in Customer':
+        return <WalkInCustomer />
+      case 'Customer List':
+        return <CustomerList />
       case 'Reservation':
         return <Reservation />
       case 'Bills':
