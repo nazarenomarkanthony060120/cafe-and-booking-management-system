@@ -6,26 +6,26 @@ import { WalkInCustomerHeader } from '@/feature/admin/walkInCustomer/component/w
 import { WalkInCustomerInputForm } from '@/feature/admin/walkInCustomer/component/walkInCustomerInputForm/WalkinCustomerForm'
 
 interface WalkInCustomerModalProps {
-  isOpen: boolean
-  onClose: () => void
-  id: number
-  status: string
-  pcNumber: number
+    isOpen: boolean
+    onClose: () => void
+    id: number
+    status: string
+    pcNumber: string
 }
 
 const WalkInCustomerModal = ({
-  isOpen,
-  onClose,
-  id,
-  status,
-  pcNumber,
+    isOpen,
+    onClose,
+    id,
+    status,
+    pcNumber,
 }: WalkInCustomerModalProps) => {
-  return (
-    <WalkInCustomerLayout isOpen={isOpen} onClose={onClose}>
-      <WalkInCustomerHeader id={id} />
-      <WalkInCustomerInputForm status={status} pcNumber={id} onClose={onClose} />
-    </WalkInCustomerLayout>
-  )
+    return (
+        <WalkInCustomerLayout isOpen={isOpen} onClose={onClose}>
+            <WalkInCustomerHeader id={id} />
+            <WalkInCustomerInputForm status={status} pcNumber={pcNumber} onClose={onClose} />
+        </WalkInCustomerLayout>
+    )
 }
 
 export default WalkInCustomerModal

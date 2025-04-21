@@ -23,6 +23,7 @@ const WalkInCustomer = () => {
                         status={pc.status}
                         email={pc.email}
                         source="walk-in"
+                        pcNumber={pc.pcNumber}
                     />
                 ))}
             </div>

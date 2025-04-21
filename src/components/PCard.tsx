@@ -11,9 +11,10 @@ interface PCCardProps {
   status: string
   email: string
   source?: string
+  pcNumber: string
 }
 
-const PCard = ({ id, status, email, source }: PCCardProps) => {
+const PCard = ({ id, status, email, source, pcNumber }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
@@ -23,7 +24,7 @@ const PCard = ({ id, status, email, source }: PCCardProps) => {
     statusClass = 'border border-red-300 text-gray-800'
     showViewButton = true
   } else if (status === 'Available' && email === 'admin@email.com') {
-    statusClass = 'border border-blue-300 text-gray-800'
+    statusClass = 'border border-gray-300 text-gray-800'
     showViewButton = true
   } else {
     statusClass = 'bg-yellow-400 text-black'
@@ -65,7 +66,7 @@ const PCard = ({ id, status, email, source }: PCCardProps) => {
               {source !== 'walk-in' ? (
                 <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
               ) : (
-                <WalkInCustomerModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+                <WalkInCustomerModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} pcNumber={pcNumber} />
               )}
             </>
           )}

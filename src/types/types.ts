@@ -24,7 +24,7 @@ export type PcData = {
 
 export type WalkInCustomerData = {
   status: string
-  pcNumber: number
+  pcNumber: string
   name: string
   email: string
   contactNumber: string
