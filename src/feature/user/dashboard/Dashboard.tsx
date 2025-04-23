@@ -57,7 +57,13 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {availablePcs.map((pc) => (
-          <PCard key={pc.id} id={parseInt(pc.pcNumber)} status={pc.status} email={pc.email} />
+          <PCard
+            key={pc.id}
+            id={parseInt(pc.pcNumber)}
+            pcNumber={pc.pcNumber}
+            status={pc.status}
+            email={pc.email}
+          />
         ))}
       </div>
     </div>

@@ -10,8 +10,8 @@ import WalkInCustomerCreateActionContainer from '../../walkInCustomerCreateActio
 interface WalkInCustomerInputFormProps {
   status: string
   pcNumber: string
-  created_date: string
-  updated_date: string
+  created_date?: string
+  updated_date?: string
   onClose: () => void
 }
 
