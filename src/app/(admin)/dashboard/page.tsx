@@ -7,6 +7,7 @@ import Reservation from '@/feature/admin/reservation/Reservation'
 import Bills from '@/feature/admin/bills/Bills'
 import CustomerList from '@/feature/admin/customerList/CustomerList'
 import WalkInCustomer from '@/feature/admin/walkInCustomer/WalkInCustomer'
+import ProtectedRoute from '@/components/ProtectedRoute'
 function DashboardPage() {
   const [currentSection, setCurrentSection] = useState('Dashboard')
 
@@ -28,15 +29,17 @@ function DashboardPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen flex">
-      <div className="relative">
-        <Sidebar setCurrentSection={setCurrentSection} />
+    <ProtectedRoute>
+      <div className="bg-white min-h-screen flex">
+        <div className="relative">
+          <Sidebar setCurrentSection={setCurrentSection} />
+        </div>
+        <div className="w-full min-h-screen text-black">
+          <SideBarHeader title={currentSection} />
+          {renderSection()}
+        </div>
       </div>
-      <div className="w-full min-h-screen text-black">
-        <SideBarHeader title={currentSection} />
-        {renderSection()}
-      </div>
-    </div>
+    </ProtectedRoute>
   )
 }
 
