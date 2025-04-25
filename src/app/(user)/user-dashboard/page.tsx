@@ -4,6 +4,8 @@ import Dashboard from '@/feature/user/dashboard/Dashboard'
 import UserSidebar from '@/layout/user/sidebar/UserSidebar'
 import Reservation from '@/feature/user/reservation/Reservation'
 import SideBarHeader from '@/components/common/header'
+import ProtectedRoute from '@/components/ProtectedRoute'
+
 function DashboardPage() {
   const [currentSection, setCurrentSection] = useState('Dashboard')
 
@@ -19,15 +21,17 @@ function DashboardPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen flex">
-      <div className="relative">
-        <UserSidebar setCurrentSection={setCurrentSection} />
+    <ProtectedRoute>
+      <div className="bg-white min-h-screen flex">
+        <div className="relative">
+          <UserSidebar setCurrentSection={setCurrentSection} />
+        </div>
+        <div className="w-full min-h-screen text-black">
+          <SideBarHeader title={`${currentSection}`} />
+          {renderSection()}
+        </div>
       </div>
-      <div className="w-full min-h-screen text-black">
-        <SideBarHeader title={`${currentSection}`} />
-        {renderSection()}
-      </div>
-    </div>
+    </ProtectedRoute>
   )
 }
 
