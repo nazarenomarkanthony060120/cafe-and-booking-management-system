@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import Input from '@/components/common/Input'
@@ -15,6 +15,8 @@ const LoginInputFormContainer = () => {
     formState: { errors },
   } = useForm<LoginFormValues>()
 
+  const [loginError, setLoginError] = useState<string | null>(null)
+
   const router = useRouter()
 
   const mutation = useMutation({
@@ -26,9 +28,17 @@ const LoginInputFormContainer = () => {
         router.push('user-dashboard')
       }
     },
+    onError: (error: any) => {
+      if (error?.code === 'auth/invalid-credential') {
+        setLoginError('Invalid email or password. Please try again.')
+      } else {
+        setLoginError('Something went wrong. Please try again later.')
+      }
+    },
   })
 
   const onSubmit = (data: LoginFormValues) => {
+    setLoginError(null) // clear previous errors
     mutation.mutate(data)
   }
 
@@ -51,6 +61,8 @@ const LoginInputFormContainer = () => {
             {...register('password', { required: 'Password is required' })}
           />
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+
+          {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
 
           <LoginActionContainer isPending={mutation.isPending} />
         </form>

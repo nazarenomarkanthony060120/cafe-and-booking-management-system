@@ -1,7 +1,7 @@
 'use client'
 
 import Input from '@/components/common/Input'
-import React from 'react'
+import React, { useState } from 'react'
 import RegisterActionContainer from '../registerActionContainer/RegisterActionContainer'
 import { useForm } from 'react-hook-form'
 import { RegisterFormValues } from '@/types/types'
@@ -15,8 +15,11 @@ const RegisterInputFormContainer = () => {
     handleSubmit,
     getValues,
     reset,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormValues>()
+
+  const [registerError, setregisterError] = useState<string | null>(null)
 
   // const router = useRouter()
 
@@ -24,6 +27,16 @@ const RegisterInputFormContainer = () => {
     mutationFn: (data: RegisterFormValues) => api.register(data),
     onSuccess: () => {
       // router.push('/login')
+    },
+    onError: (error: any) => {
+      if (error.message === 'email-already-in-use') {
+        setError('email', { type: 'manual', message: 'Email address is already taken' })
+      } else if (error.message === 'contactNumber-already-in-use') {
+        setError('contactNumber', { type: 'manual', message: 'Mobile number is already taken' })
+      } else {
+        // fallback error
+        alert('Registration failed.')
+      }
     },
   })
 

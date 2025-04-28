@@ -18,8 +18,6 @@ export const login = async (data: LoginFormValues) => {
       })
     })
     .catch((error) => {
-      const errorCode = error.code
-      const errorMessage = error.message
-      console.error('Error login user:', errorCode, errorMessage)
+      throw error
     })
 }
