@@ -13,6 +13,17 @@ import { RegisterFormValues } from '@/types/types'
 
 export const registerUser = async (data: RegisterFormValues) => {
   try {
+    // 0.1 Validate name format (only letters and spaces)
+    const isValidName = /^[A-Za-z\s]+$/.test(data.name)
+    if (!isValidName) {
+      throw new Error('invalid-name')
+    }
+    // 0. Validate contact number format (must start with 09 and be 11 digits)
+    const isValidContact = /^09\d{9}$/.test(data.contactNumber)
+    if (!isValidContact) {
+      throw new Error('invalid-contact-number')
+    }
+
     // 1. Check if contactNumber already exists
     const contactQuery = query(
       collection(db, 'users'),
@@ -24,7 +35,7 @@ export const registerUser = async (data: RegisterFormValues) => {
       throw new Error('contactNumber-already-in-use')
     }
 
-    // 2. If contact number is unique, create the user with email/password
+    // 2. Create the user with email/password
     const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
     const user = userCredential.user
 
