@@ -137,7 +137,7 @@ export const WalkInCustomerInputForm = ({
             <label className="text-gray-600 text-sm">Contact Number</label>
             <Input
               className="w-full mt-1 p-2 border rounded-md"
-              type="number"
+              type="text"
               text=""
               {...register('contactNumber', {
                 required: 'Contact number is required',
