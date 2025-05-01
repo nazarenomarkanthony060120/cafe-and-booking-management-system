@@ -91,7 +91,7 @@ const RegisterInputFormContainer = () => {
 
           <Input
             className="w-full mt-1 p-2 border rounded-md"
-            type="number"
+            type="text"
             text="Contact Number"
             {...register('contactNumber', {
               required: 'Contact number is required',
