@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { WalkInCustomerSelectTime } from '../../walkInCustomerSelectTime/WalkInCustomerSelectTime'
 import { WalkInCustomerData } from '@/types/types'
-import { useForm } from 'react-hook-form'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useForm, Controller } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
 import { api } from '@/api/api'
 import { db, collection, updateDoc, getDocs, where, query } from '@/lib/firebase'
 import WalkInCustomerCreateActionContainer from '../../walkInCustomerCreateActionContainer/WalkInCustomerCreateActionContainer'
+import Input from '@/components/common/Input'
 
 interface WalkInCustomerInputFormProps {
   status: string
@@ -37,6 +38,7 @@ export const WalkInCustomerInputForm = ({
     handleSubmit,
     formState: { errors },
     reset,
+    control,
     setError,
   } = useForm<WalkInCustomerData>()
 
@@ -60,6 +62,11 @@ export const WalkInCustomerInputForm = ({
 
       reset()
       onClose()
+    },
+    onError: (error: any) => {
+      if (error.message === 'contactNumber-already-in-use') {
+        setError('contactNumber', { type: 'manual', message: 'Mobile number is already taken' })
+      }
     },
   })
 
@@ -96,23 +103,51 @@ export const WalkInCustomerInputForm = ({
           </div>
           <div>
             <label className="text-gray-600 text-sm">Name</label>
-            <input
-              {...register('name', { required: true })}
-              className="w-full p-2 border rounded mt-1 text-sm"
-              placeholder="Input Customer Name"
+            <Controller
+              name="name"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Name is required',
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: 'Name must not contain special characters or numbers',
+                },
+              }}
+              render={({ field }) => (
+                <Input
+                  className="w-full mt-1 p-2 border rounded-md"
+                  type="text"
+                  text=""
+                  value={field.value}
+                  onChange={(e) => {
+                    const capitalized = e.target.value
+                      .replace(/\s+/g, ' ')
+                      .split(' ')
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                      .join(' ')
+                    field.onChange(capitalized)
+                  }}
+                  errors={errors.name?.message}
+                />
+              )}
             />
-            {errors.name && <p className="text-red-500 text-sm">Name is required</p>}
           </div>
           <div>
             <label className="text-gray-600 text-sm">Contact Number</label>
-            <input
-              {...register('contactNumber', { required: true })}
-              className="w-full p-2 border rounded mt-1 text-sm"
-              placeholder="Input Customer Contact Number"
+            <Input
+              className="w-full mt-1 p-2 border rounded-md"
+              type="number"
+              text=""
+              {...register('contactNumber', {
+                required: 'Contact number is required',
+                pattern: {
+                  value: /^09\d{9}$/,
+                  message: 'Contact number must start with "09" and be exactly 11 digits',
+                },
+              })}
+              errors={errors.contactNumber?.message}
             />
-            {errors.contactNumber && (
-              <p className="text-red-500 text-sm">Contact number is required</p>
-            )}
           </div>
 
           <WalkInCustomerSelectTime onTimeModeChange={handleTimeModeChange} />
