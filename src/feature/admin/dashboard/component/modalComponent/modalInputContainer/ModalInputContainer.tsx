@@ -69,6 +69,23 @@ const ModalInputContainer = ({ onClose }: ModalInputContainerProps) => {
         />
         {errors.pcNumber && <p className="text-red-500 text-sm mt-1">{errors.pcNumber.message}</p>}
       </div>
+      <div>
+        <label className="text-gray-600 text-sm">Monitor Type</label>
+        <select
+          className="w-full mt-1 p-2 border rounded bg-gray-50 text-gray-800 text-sm"
+          {...register('monitorType', { required: 'Monitor Type is required' })}
+          defaultValue=""
+        >
+          <option value="" disabled>
+            Select Monitor Type
+          </option>
+          <option value="curved">Curved</option>
+          <option value="normal">Normal</option>
+        </select>
+        {errors.monitorType && (
+          <p className="text-red-500 text-sm mt-1">{errors.monitorType.message}</p>
+        )}
+      </div>
 
       <AddPcActionContainer onClose={onClose} isLoading={mutation.isPending || isChecking} />
     </form>

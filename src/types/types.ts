@@ -13,6 +13,7 @@ export type LoginFormValues = {
 
 export type AddPcFormValues = {
   pcNumber: string
+  monitorType: string
 }
 
 export type PcData = {
