@@ -17,6 +17,7 @@ export type AddPcFormValues = {
 }
 
 export type PcData = {
+  monitorType: string
   id: string
   pcNumber: string
   status: string

@@ -11,6 +11,7 @@ interface WalkInCustomerModalProps {
   id: number
   status: string
   pcNumber: string
+  monitorType: string
 }
 
 const WalkInCustomerModal = ({
@@ -19,11 +20,12 @@ const WalkInCustomerModal = ({
   id,
   status,
   pcNumber,
+  monitorType,
 }: WalkInCustomerModalProps) => {
   return (
     <WalkInCustomerLayout isOpen={isOpen} onClose={onClose}>
       <WalkInCustomerHeader id={id} />
-      <WalkInCustomerInputForm status={status} pcNumber={pcNumber} onClose={onClose} />
+      <WalkInCustomerInputForm status={status} pcNumber={pcNumber} onClose={onClose} monitorType={monitorType} />
     </WalkInCustomerLayout>
   )
 }

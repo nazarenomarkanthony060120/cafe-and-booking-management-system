@@ -14,6 +14,7 @@ interface WalkInCustomerInputFormProps {
   created_date?: string
   updated_date?: string
   onClose: () => void
+  monitorType: string
 }
 
 const formatDateTime = (date: Date) => {
@@ -31,6 +32,7 @@ export const WalkInCustomerInputForm = ({
   status,
   pcNumber,
   onClose,
+  monitorType,
 }: WalkInCustomerInputFormProps) => {
   const [timeMode, setTimeMode] = useState<string>('open_time')
   const {
@@ -149,7 +151,10 @@ export const WalkInCustomerInputForm = ({
               errors={errors.contactNumber?.message}
             />
           </div>
-
+          <div>
+            <label className="text-gray-600 text-sm">Monitor Type</label>
+            <div className="p-2 border rounded bg-gray-50 text-gray-800">{monitorType}</div>
+          </div>
           <WalkInCustomerSelectTime onTimeModeChange={handleTimeModeChange} />
           <WalkInCustomerCreateActionContainer onClose={onClose} isLoading={mutation.isPending} />
         </form>
