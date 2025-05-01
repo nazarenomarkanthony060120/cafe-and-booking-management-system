@@ -12,9 +12,10 @@ interface PCCardProps {
   email: string
   source?: string
   pcNumber: string
+  monitorType: string
 }
 
-const PCard = ({ id, status, email, source, pcNumber }: PCCardProps) => {
+const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
@@ -72,6 +73,7 @@ const PCard = ({ id, status, email, source, pcNumber }: PCCardProps) => {
                   id={id}
                   status={status}
                   pcNumber={pcNumber}
+                  monitorType={monitorType}
                 />
               )}
             </>

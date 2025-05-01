@@ -24,6 +24,7 @@ const WalkInCustomer = () => {
               id={parseInt(pc.pcNumber)}
               status={pc.status}
               email={pc.email}
+              monitorType={pc.monitorType}
               source="walk-in"
               pcNumber={pc.pcNumber}
             />
