@@ -9,6 +9,7 @@ export const addPcAdmin = async (data: AddPcFormValues) => {
 
     const pcData = {
       pcNumber: data.pcNumber,
+      monitorType: data.monitorType,
       status: 'Available',
       email: 'admin@email.com',
       uid: currentUser.uid,
