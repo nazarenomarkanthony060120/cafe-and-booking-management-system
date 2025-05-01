@@ -79,8 +79,8 @@ const ModalInputContainer = ({ onClose }: ModalInputContainerProps) => {
           <option value="" disabled>
             Select Monitor Type
           </option>
-          <option value="curved">Curved</option>
-          <option value="normal">Normal</option>
+          <option value="Curved">Curved</option>
+          <option value="Normal">Normal</option>
         </select>
         {errors.monitorType && (
           <p className="text-red-500 text-sm mt-1">{errors.monitorType.message}</p>
