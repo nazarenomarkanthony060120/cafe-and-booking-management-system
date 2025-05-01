@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 
-export const WalkInCustomerSelectTime = () => {
+interface WalkInCustomerSelectTimeProps {
+  onTimeModeChange: (timeMode: 'open_time' | 'fixed_time') => void
+}
+
+export const WalkInCustomerSelectTime = ({ onTimeModeChange }: WalkInCustomerSelectTimeProps) => {
   const [mode, setMode] = useState('')
   const [duration, setDuration] = useState('')
 
   const handleModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMode(e.target.value)
-    setDuration('') // Reset duration when mode changes
+    const selectedMode = e.target.value
+    setMode(selectedMode)
+    setDuration('')
+    onTimeModeChange(selectedMode === 'open' ? 'open_time' : 'fixed_time')
   }
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -15,7 +21,6 @@ export const WalkInCustomerSelectTime = () => {
 
   return (
     <div className="space-y-4">
-      {/* PC Time Mode Selection */}
       <div>
         <label className="text-gray-600 text-sm">PC Time Mode</label>
         <select

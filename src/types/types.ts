@@ -23,10 +23,14 @@ export type PcData = {
 }
 
 export type WalkInCustomerData = {
-  status: string
   pcNumber: string
   name: string
-  email: string
+  status: string
+  start_time: string
+  time_mode: string
+  end_time: string
+  payment: string
+  type: string
   contactNumber: string
   created_date: string
   updated_date: string

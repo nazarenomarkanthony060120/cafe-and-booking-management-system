@@ -1,4 +1,3 @@
-import { Inter_Font } from '@/assets/fonts/Fonts'
 import { Button } from '@/components/common/Button'
 import React from 'react'
 
