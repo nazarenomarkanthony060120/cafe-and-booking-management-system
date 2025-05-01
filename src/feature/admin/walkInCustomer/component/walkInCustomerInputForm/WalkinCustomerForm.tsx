@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { WalkInCustomerSelectTime } from '../../walkInCustomerSelectTime/WalkInCustomerSelectTime'
 import { WalkInCustomerData } from '@/types/types'
 import { useForm, Controller } from 'react-hook-form'
@@ -16,11 +16,23 @@ interface WalkInCustomerInputFormProps {
   onClose: () => void
 }
 
+const formatDateTime = (date: Date) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
 export const WalkInCustomerInputForm = ({
   status,
   pcNumber,
   onClose,
 }: WalkInCustomerInputFormProps) => {
+  const [timeMode, setTimeMode] = useState<string>('open_time')
   const {
     register,
     handleSubmit,
@@ -31,15 +43,13 @@ export const WalkInCustomerInputForm = ({
   } = useForm<WalkInCustomerData>()
 
   const mutation = useMutation({
-    mutationFn: (data: WalkInCustomerData) => api.addWalkInData(data),
+    mutationFn: (data: WalkInCustomerData) => api.customerData(data),
     onSuccess: async (_data, variables) => {
       try {
         const q = query(collection(db, 'pcs_list'), where('pcNumber', '==', variables?.pcNumber))
         const querySnapshot = await getDocs(q)
         if (!querySnapshot.empty) {
           const docRef = querySnapshot.docs[0].ref
-          console.log(docRef)
-
           await updateDoc(docRef, {
             status: 'In-use',
           })
@@ -61,14 +71,26 @@ export const WalkInCustomerInputForm = ({
   })
 
   const onSubmit = (formData: WalkInCustomerData) => {
+    const currentDate = new Date()
+    const formattedTime = formatDateTime(currentDate)
+
     const dataToSend: WalkInCustomerData = {
       ...formData,
       pcNumber: pcNumber,
       status: 'In-use',
-      created_date: new Date().toISOString(),
-      updated_date: new Date().toISOString(),
+      type: 'walk-in',
+      time_mode: timeMode,
+      start_time: timeMode === 'open_time' ? formattedTime : '',
+      end_time: '',
+      payment: '',
+      created_date: formattedTime,
+      updated_date: formattedTime,
     }
     mutation.mutate(dataToSend)
+  }
+
+  const handleTimeModeChange = (mode: string) => {
+    setTimeMode(mode)
   }
 
   return (
@@ -112,15 +134,6 @@ export const WalkInCustomerInputForm = ({
             />
           </div>
           <div>
-            <label className="text-gray-600 text-sm">Email</label>
-            <input
-              {...register('email', { required: true })}
-              className="w-full p-2 border rounded mt-1 text-sm"
-              placeholder="Input Customer Email"
-            />
-            {errors.email && <p className="text-red-500 text-sm">Email is required</p>}
-          </div>
-          <div>
             <label className="text-gray-600 text-sm">Contact Number</label>
             <Input
               className="w-full mt-1 p-2 border rounded-md"
@@ -137,7 +150,7 @@ export const WalkInCustomerInputForm = ({
             />
           </div>
 
-          <WalkInCustomerSelectTime />
+          <WalkInCustomerSelectTime onTimeModeChange={handleTimeModeChange} />
           <WalkInCustomerCreateActionContainer onClose={onClose} isLoading={mutation.isPending} />
         </form>
       </div>
