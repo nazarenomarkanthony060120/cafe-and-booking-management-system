@@ -8,7 +8,6 @@ import { WalkInCustomerInputForm } from '@/feature/admin/walkInCustomer/componen
 interface WalkInCustomerModalProps {
   isOpen: boolean
   onClose: () => void
-  id: number
   status: string
   pcNumber: string
   monitorType: string
@@ -17,14 +16,13 @@ interface WalkInCustomerModalProps {
 const WalkInCustomerModal = ({
   isOpen,
   onClose,
-  id,
   status,
   pcNumber,
   monitorType,
 }: WalkInCustomerModalProps) => {
   return (
     <WalkInCustomerLayout isOpen={isOpen} onClose={onClose}>
-      <WalkInCustomerHeader id={id} />
+      <WalkInCustomerHeader pcNumber={pcNumber} />
       <WalkInCustomerInputForm status={status} pcNumber={pcNumber} onClose={onClose} monitorType={monitorType} />
     </WalkInCustomerLayout>
   )

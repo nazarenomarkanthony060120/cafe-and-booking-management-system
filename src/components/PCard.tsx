@@ -7,7 +7,6 @@ import PcDetailsModal from '@/layout/admin/sidebar/component/PcDetailsModal'
 import WalkInCustomerModal from '@/layout/admin/sidebar/component/WalkInCustomerModal'
 
 interface PCCardProps {
-  id: number
   status: string
   email: string
   source?: string
@@ -15,7 +14,7 @@ interface PCCardProps {
   monitorType: string
 }
 
-const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps) => {
+const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
@@ -41,7 +40,7 @@ const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps
         className={`p-4 rounded-lg shadow-md flex flex-col justify-center min-w-[260px] h-[115px] ${statusClass}`}
       >
         <div className="flex items-center justify-between">
-          <span className="text-xl font-semibold">PC {id}</span>
+          <span className="text-xl font-semibold">PC {pcNumber}</span>
           <Image src={pcLogo} alt="PC Icon" width={32} height={32} />
         </div>
 
@@ -54,7 +53,7 @@ const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps
                 className="text-sm text-red-800 hover:underline transition"
                 onClick={openModal}
               />
-              <ReservationModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+              <ReservationModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
             </>
           )}
           {showViewButton && status === 'Available' && email === 'admin@email.com' && (
@@ -65,12 +64,12 @@ const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps
                 onClick={openModal}
               />
               {source !== 'walk-in' ? (
-                <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+                <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
               ) : (
                 <WalkInCustomerModal
                   isOpen={isModalOpen}
                   onClose={closeModal}
-                  id={id}
+                  // id={id}
                   status={status}
                   pcNumber={pcNumber}
                   monitorType={monitorType}
@@ -85,7 +84,7 @@ const PCard = ({ id, status, email, source, pcNumber, monitorType }: PCCardProps
                 className="text-sm text-gray-800 hover:underline transition"
                 onClick={openModal}
               />
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} id={id} status={status} />
+              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
             </>
           )}
         </div>

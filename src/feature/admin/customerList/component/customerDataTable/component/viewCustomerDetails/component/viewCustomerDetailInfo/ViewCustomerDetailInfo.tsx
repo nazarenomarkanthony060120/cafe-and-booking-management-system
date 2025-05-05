@@ -5,8 +5,8 @@ import { WalkInCustomerData } from '@/types/types'
 import { ConfirmationModal } from '@/layout/admin/sidebar/component/ConfirmationModal'
 import { Button } from '@/components/common/Button'
 import { collection, db, getDocs, query, updateDoc, where } from '@/lib/firebase'
-import { ViewCustomerDetailInfoButton } from './component/ViewCustomerDetailInfoButton'
 import { ViewCustomerDetailInfoDisplay } from './component/ViewCustomerDetailInfoDisplay'
+import { ViewCustomerDetailInfoButton } from './component/ViewCustomerDetailInfoButton'
 
 interface ViewCustomerDetailInfoProps {
   customerData: WalkInCustomerData
@@ -82,6 +82,7 @@ export const ViewCustomerDetailInfo = ({ customerData, onClose }: ViewCustomerDe
       />
       <ViewCustomerDetailInfoButton
         isLoading={isLoading}
+        setIsLoading={setIsLoading}
         onClick={onClose}
         customerData={customerData}
         showConfirmation={showConfirmation}
