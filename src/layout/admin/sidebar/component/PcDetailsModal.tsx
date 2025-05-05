@@ -28,9 +28,13 @@ const PcDetailsModal = ({ isOpen, onClose, pcNumber }: PcDetailsModalProps) => {
   return (
     <ViewPcUsersLayout isOpen={isOpen} onClose={onClose}>
       <ViewPcUsersHeader pcNumber={pcNumber} />
-      <ViewPcUsersDisplay isLoading={isLoading} matchedCustomers={matchedCustomers} isError={isError} />
+      <ViewPcUsersDisplay
+        isLoading={isLoading}
+        matchedCustomers={matchedCustomers}
+        isError={isError}
+      />
       <ViewPcUsersDisplayButton onClose={onClose} />
-    </ViewPcUsersLayout >
+    </ViewPcUsersLayout>
   )
 }
 

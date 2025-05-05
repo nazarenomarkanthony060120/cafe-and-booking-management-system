@@ -5,7 +5,7 @@ interface ConfirmationModalProps {
   customerData: WalkInCustomerData
   isOpen: boolean
   onClose: () => void
-  onConfirm: () => void
+  onConfirm: () => void // Handles the confirm action when user clicks 'Confirm'
   isLoading: Boolean
 }
 
@@ -66,10 +66,10 @@ export const ConfirmationModal = ({
             Cancel
           </button>
           <button
-            onClick={onConfirm}
+            onClick={onConfirm} // Calls the onConfirm function passed from parent
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
           >
-            Confirm
+            {isLoading ? 'Processing...' : 'Confirm'}
           </button>
         </div>
       </div>

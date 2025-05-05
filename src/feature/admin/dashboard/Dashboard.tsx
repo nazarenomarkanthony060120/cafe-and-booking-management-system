@@ -44,7 +44,8 @@ const Dashboard = () => {
               pcNumber={pc.pcNumber}
               status={pc.status}
               email={pc.email}
-              monitorType={''} />
+              monitorType={''}
+            />
           ))}
         </div>
       ) : (

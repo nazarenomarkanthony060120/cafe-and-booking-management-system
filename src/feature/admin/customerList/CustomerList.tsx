@@ -23,15 +23,19 @@ const CustomerList = () => {
   const [rowsPerPage] = useState(5)
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: null,
-    direction: 'ascending'
+    direction: 'ascending',
   })
 
-  const { data: customers = [], isLoading, error } = useQuery<WalkInCustomerData[]>({
+  const {
+    data: customers = [],
+    isLoading,
+    error,
+  } = useQuery<WalkInCustomerData[]>({
     queryKey: ['customers'],
     queryFn: async () => {
       const data = await getCustomerData({} as any)
       return data as unknown as WalkInCustomerData[]
-    }
+    },
   })
 
   // Sort function
@@ -55,9 +59,10 @@ const CustomerList = () => {
 
   const filteredData = useMemo(() => {
     if (!customers) return []
-    const filtered = customers.filter((customer: WalkInCustomerData) =>
-      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.pcNumber.toString().includes(searchTerm)
+    const filtered = customers.filter(
+      (customer: WalkInCustomerData) =>
+        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.pcNumber.toString().includes(searchTerm)
     )
     return sortData(filtered)
   }, [customers, searchTerm, sortConfig])
@@ -109,10 +114,8 @@ const CustomerList = () => {
       <div className="flex items-center justify-between mt-4 px-2">
         <div className="text-sm text-gray-700">
           Showing <span className="font-medium">{indexOfFirstRow + 1}</span> to{' '}
-          <span className="font-medium">
-            {Math.min(indexOfLastRow, filteredData.length)}
-          </span>{' '}
-          of <span className="font-medium">{filteredData.length}</span> results
+          <span className="font-medium">{Math.min(indexOfLastRow, filteredData.length)}</span> of{' '}
+          <span className="font-medium">{filteredData.length}</span> results
         </div>
         <div className="flex items-center space-x-2">
           <button
@@ -125,10 +128,11 @@ const CustomerList = () => {
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
             <button
               key={number}
-              className={`px-3 py-1 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${currentPage === number
-                ? 'bg-blue-500 text-white'
-                : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                }`}
+              className={`px-3 py-1 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                currentPage === number
+                  ? 'bg-blue-500 text-white'
+                  : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+              }`}
               onClick={() => paginate(number)}
             >
               {number}

@@ -3,16 +3,10 @@ import React from 'react'
 
 interface ViewCustomerDetailInfoDisplayProps {
   customerData: WalkInCustomerData
-  onChange: (e: any) => void
-  isLoading: boolean
-  sessionAction: string
 }
 
 export const ViewCustomerDetailInfoDisplay = ({
   customerData,
-  onChange,
-  isLoading,
-  sessionAction,
 }: ViewCustomerDetailInfoDisplayProps) => {
   return (
     <div className="space-y-3">
@@ -20,13 +14,20 @@ export const ViewCustomerDetailInfoDisplay = ({
         <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Status</label>
         <input
           type="text"
-          value={!customerData.end_time ? 'On-going' : 'Completed'}
+          value={customerData.action_status}
           readOnly
           className={`w-full px-3 py-2 border border-gray-300 rounded-md ${
-            !customerData.end_time ? 'bg-yellow-50' : 'bg-green-50'
+            customerData.action_status === 'On-going'
+              ? 'bg-yellow-50'
+              : customerData.action_status === 'Waiting for Payment'
+                ? 'bg-red-50'
+                : customerData.action_status === 'Completed'
+                  ? 'bg-green-50'
+                  : 'bg-gray-50'
           }`}
         />
       </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Name</label>
         <input
@@ -57,30 +58,30 @@ export const ViewCustomerDetailInfoDisplay = ({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Time Mode</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+          Monitor Type
+        </label>
         <input
           type="text"
-          value={customerData.time_mode === 'open_time' ? 'Open Time' : customerData.time_mode}
+          value={customerData.monitorType}
           readOnly
           className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
-          Session Action <span className="text-red-500">*</span>
-        </label>
-        <select
-          value={sessionAction}
-          onChange={onChange}
+        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Time Mode</label>
+        <input
+          type="text"
+          value={
+            customerData.time_mode === 'fixed_time'
+              ? 'Fix Time'
+              : customerData.time_mode === 'open_time'
+                ? 'Open Time'
+                : ''
+          }
+          readOnly
           className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
-          required
-          disabled={isLoading}
-        >
-          <option value="" disabled className="text-gray-400">
-            Select an action
-          </option>
-          <option value="logout">Logout</option>
-        </select>
+        />
       </div>
     </div>
   )

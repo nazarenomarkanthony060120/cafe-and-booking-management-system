@@ -15,7 +15,6 @@ interface ViewCustomerDetailInfoProps {
 
 export const ViewCustomerDetailInfo = ({ customerData, onClose }: ViewCustomerDetailInfoProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const [sessionAction, setSessionAction] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const formatDateTime = (date: Date) => {
@@ -29,41 +28,29 @@ export const ViewCustomerDetailInfo = ({ customerData, onClose }: ViewCustomerDe
   }
 
   const handleComplete = async () => {
-    if (!sessionAction) {
-      alert('Please select a session action before proceeding')
+    setIsLoading(true)
+    try {
+      const currentDate = new Date()
+      const formattedTime = formatDateTime(currentDate)
+
+      const q = query(collection(db, 'customers'), where('pcNumber', '==', customerData.pcNumber))
+      const querySnapshot = await getDocs(q)
+
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref
+        await updateDoc(docRef, {
+          end_time: formattedTime,
+          updated_date: formattedTime,
+        })
+      }
+    } catch (error) {
+      console.error('Failed to update end time:', error)
+      alert('Failed to update end time. Please try again.')
+      setIsLoading(false)
       return
     }
-
-    if (sessionAction === 'logout') {
-      setIsLoading(true)
-      try {
-        const currentDate = new Date()
-        const formattedTime = formatDateTime(currentDate)
-
-        const q = query(collection(db, 'customers'), where('pcNumber', '==', customerData.pcNumber))
-        const querySnapshot = await getDocs(q)
-
-        if (!querySnapshot.empty) {
-          const docRef = querySnapshot.docs[0].ref
-          await updateDoc(docRef, {
-            end_time: formattedTime,
-            updated_date: formattedTime
-          })
-        }
-      } catch (error) {
-        console.error('Failed to update end time:', error)
-        alert('Failed to update end time. Please try again.')
-        setIsLoading(false)
-        return
-      }
-      setIsLoading(false)
-    }
+    setIsLoading(false)
     setShowConfirmation(true)
-  }
-
-  const handleConfirmComplete = () => {
-    setShowConfirmation(false)
-    onClose()
   }
 
   return (
@@ -74,20 +61,13 @@ export const ViewCustomerDetailInfo = ({ customerData, onClose }: ViewCustomerDe
       }}
       className="space-y-6"
     >
-      <ViewCustomerDetailInfoDisplay
-        customerData={customerData}
-        onChange={(e) => setSessionAction(e.target.value)}
-        isLoading={isLoading}
-        sessionAction={sessionAction}
-      />
+      <ViewCustomerDetailInfoDisplay customerData={customerData} />
       <ViewCustomerDetailInfoButton
         isLoading={isLoading}
         setIsLoading={setIsLoading}
         onClick={onClose}
         customerData={customerData}
-        showConfirmation={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-        handleConfirmComplete={handleConfirmComplete}
+        onClose={onClose}
       />
     </form>
   )

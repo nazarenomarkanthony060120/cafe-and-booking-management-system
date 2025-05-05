@@ -53,7 +53,12 @@ const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) =>
                 className="text-sm text-red-800 hover:underline transition"
                 onClick={openModal}
               />
-              <ReservationModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
+              <ReservationModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                pcNumber={pcNumber}
+                status={status}
+              />
             </>
           )}
           {showViewButton && status === 'Available' && email === 'admin@email.com' && (
@@ -64,7 +69,12 @@ const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) =>
                 onClick={openModal}
               />
               {source !== 'walk-in' ? (
-                <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
+                <PcDetailsModal
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                  pcNumber={pcNumber}
+                  status={status}
+                />
               ) : (
                 <WalkInCustomerModal
                   isOpen={isModalOpen}
@@ -84,7 +94,12 @@ const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) =>
                 className="text-sm text-gray-800 hover:underline transition"
                 onClick={openModal}
               />
-              <PcDetailsModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} />
+              <PcDetailsModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                pcNumber={pcNumber}
+                status={status}
+              />
             </>
           )}
         </div>
