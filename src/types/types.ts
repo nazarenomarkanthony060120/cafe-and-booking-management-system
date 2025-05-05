@@ -36,4 +36,5 @@ export type WalkInCustomerData = {
   contactNumber: string
   created_date: string
   updated_date: string
+  monitorType: string
 }

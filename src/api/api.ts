@@ -3,6 +3,7 @@ import { login } from './login/login'
 import { addPcAdmin, isPcNumberTaken } from './addPcAdmin/addPcAdmin'
 import { getPcList } from './addPcAdmin/getPcList'
 import { customerData } from './customerData/customerData'
+import { getCustomerData } from './customerData/getCustomerData'
 
 export const api = {
   register: registerUser,
@@ -11,4 +12,5 @@ export const api = {
   getPcList: getPcList,
   isPcNumberTaken: isPcNumberTaken,
   customerData: customerData,
+  getCustomerData: getCustomerData,
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-interface WalkInCustomerSelectTimeProps {
-  onTimeModeChange: (timeMode: 'open_time' | 'fixed_time') => void
+interface CustomerSelectTimeProps {
+  onTimeModeChange: (timeMode: 'open_time' | 'fixed_time', duration?: string) => void
 }
 
-export const WalkInCustomerSelectTime = ({ onTimeModeChange }: WalkInCustomerSelectTimeProps) => {
+export const CustomerSelectTime = ({ onTimeModeChange }: CustomerSelectTimeProps) => {
   const [mode, setMode] = useState('')
   const [duration, setDuration] = useState('')
 
@@ -16,7 +16,9 @@ export const WalkInCustomerSelectTime = ({ onTimeModeChange }: WalkInCustomerSel
   }
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDuration(e.target.value)
+    const selectedDuration = e.target.value
+    setDuration(selectedDuration)
+    onTimeModeChange('fixed_time', selectedDuration)
   }
 
   return (

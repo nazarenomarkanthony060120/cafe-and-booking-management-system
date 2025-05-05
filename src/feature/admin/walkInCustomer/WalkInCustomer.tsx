@@ -21,7 +21,6 @@ const WalkInCustomer = () => {
           {availablePcs.map((pc) => (
             <PCard
               key={pc.id}
-              id={parseInt(pc.pcNumber)}
               status={pc.status}
               email={pc.email}
               monitorType={pc.monitorType}

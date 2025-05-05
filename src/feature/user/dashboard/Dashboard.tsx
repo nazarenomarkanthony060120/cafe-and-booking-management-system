@@ -59,11 +59,10 @@ const Dashboard = () => {
         {availablePcs.map((pc) => (
           <PCard
             key={pc.id}
-            id={parseInt(pc.pcNumber)}
             pcNumber={pc.pcNumber}
             status={pc.status}
             email={pc.email}
-          />
+            monitorType={''} />
         ))}
       </div>
     </div>
