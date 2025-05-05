@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { WalkInCustomerSelectTime } from '../../walkInCustomerSelectTime/WalkInCustomerSelectTime'
 import { WalkInCustomerData } from '@/types/types'
 import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
@@ -7,6 +6,7 @@ import { api } from '@/api/api'
 import { db, collection, updateDoc, getDocs, where, query } from '@/lib/firebase'
 import WalkInCustomerCreateActionContainer from '../../walkInCustomerCreateActionContainer/WalkInCustomerCreateActionContainer'
 import Input from '@/components/common/Input'
+import { CustomerSelectTime } from '@/components/common/CustomerSelectTime'
 
 interface WalkInCustomerInputFormProps {
   status: string
@@ -28,13 +28,10 @@ const formatDateTime = (date: Date) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
-export const WalkInCustomerInputForm = ({
-  status,
-  pcNumber,
-  onClose,
-  monitorType,
-}: WalkInCustomerInputFormProps) => {
-  const [timeMode, setTimeMode] = useState<string>('open_time')
+export const WalkInCustomerInputForm = ({ status, pcNumber, onClose, monitorType }: WalkInCustomerInputFormProps) => {
+  const [timeMode, setTimeMode] = useState<'open_time' | 'fixed_time'>('open_time')
+  const [selectedDuration, setSelectedDuration] = useState<string | undefined>()
+
   const {
     register,
     handleSubmit,
@@ -82,17 +79,25 @@ export const WalkInCustomerInputForm = ({
       status: 'In-use',
       type: 'walk-in',
       time_mode: timeMode,
-      start_time: timeMode === 'open_time' ? formattedTime : '',
+      start_time: formattedTime,
       end_time: '',
       payment: '',
       created_date: formattedTime,
       updated_date: formattedTime,
+      monitorType: monitorType
     }
+
+    if (timeMode === 'fixed_time' && selectedDuration) {
+      const endTime = new Date(currentDate.getTime() + Number(selectedDuration) * 60 * 60 * 1000)
+      dataToSend.end_time = formatDateTime(endTime)
+    }
+
     mutation.mutate(dataToSend)
   }
 
-  const handleTimeModeChange = (mode: string) => {
+  const handleTimeModeChange = (mode: 'open_time' | 'fixed_time', duration?: string) => {
     setTimeMode(mode)
+    setSelectedDuration(duration)
   }
 
   return (
@@ -155,7 +160,7 @@ export const WalkInCustomerInputForm = ({
             <label className="text-gray-600 text-sm">Monitor Type</label>
             <div className="p-2 border rounded bg-gray-50 text-gray-800">{monitorType}</div>
           </div>
-          <WalkInCustomerSelectTime onTimeModeChange={handleTimeModeChange} />
+          <CustomerSelectTime onTimeModeChange={handleTimeModeChange} />
           <WalkInCustomerCreateActionContainer onClose={onClose} isLoading={mutation.isPending} />
         </form>
       </div>

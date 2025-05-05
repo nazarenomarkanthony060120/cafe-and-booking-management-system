@@ -6,6 +6,7 @@ interface ConfirmationModalProps {
   isOpen: boolean
   onClose: () => void
   onConfirm: () => void
+  isLoading: Boolean
 }
 
 export const ConfirmationModal = ({
@@ -13,6 +14,7 @@ export const ConfirmationModal = ({
   isOpen,
   onClose,
   onConfirm,
+  isLoading,
 }: ConfirmationModalProps) => {
   if (!isOpen) return null
 
