@@ -6,6 +6,7 @@ import { ViewPcUsersLayout } from '@/feature/admin/dashboard/component/viewPcUse
 import { ViewPcUsersHeader } from '@/feature/admin/dashboard/component/viewPcUsers/viewPcUsersHeader/ViewPcUsersHeader'
 import { ViewPcUsersDisplay } from '@/feature/admin/dashboard/component/viewPcUsers/viewPcUsersDisplay/ViewPcUsersDisplay'
 import { ViewPcUsersDisplayButton } from '@/feature/admin/dashboard/component/viewPcUsers/viewPcUsersDisplayButton/ViewPcUsersDisplayButton'
+import { collection, db, getDocs, query, where } from '@/lib/firebase'
 
 interface PcDetailsModalProps {
   isOpen: boolean
@@ -15,13 +16,36 @@ interface PcDetailsModalProps {
 }
 
 const PcDetailsModal = ({ isOpen, onClose, pcNumber }: PcDetailsModalProps) => {
-  const { data, isLoading, isError } = useQuery<WalkInCustomerData[]>({
+  const {
+    data: customersData,
+    isLoading: isCustomersLoading,
+    isError: isCustomersError,
+  } = useQuery<WalkInCustomerData[]>({
     queryKey: ['customers'],
     queryFn: api.getCustomerData,
     enabled: isOpen,
   })
 
-  const matchedCustomers = data?.filter((customer) => customer.pcNumber === pcNumber) ?? []
+  const {
+    data: pcData,
+    isLoading: isPcLoading,
+    isError: isPcError,
+  } = useQuery({
+    queryKey: ['pc-status', pcNumber],
+    queryFn: async () => {
+      const q = query(collection(db, 'pcs_list'), where('pcNumber', '==', pcNumber))
+      const querySnapshot = await getDocs(q)
+      if (!querySnapshot.empty) {
+        return querySnapshot.docs[0].data()
+      }
+      return null
+    },
+    enabled: isOpen,
+  })
+
+  const matchedCustomers = customersData?.filter((customer) => customer.pcNumber === pcNumber) ?? []
+  const isLoading = isCustomersLoading || isPcLoading
+  const isError = isCustomersError || isPcError
 
   if (!isOpen) return null
 
@@ -30,7 +54,7 @@ const PcDetailsModal = ({ isOpen, onClose, pcNumber }: PcDetailsModalProps) => {
       <ViewPcUsersHeader pcNumber={pcNumber} />
       <ViewPcUsersDisplay
         isLoading={isLoading}
-        matchedCustomers={matchedCustomers}
+        matchedCustomers={pcData?.status === 'Available' ? [] : matchedCustomers}
         isError={isError}
       />
       <ViewPcUsersDisplayButton onClose={onClose} />

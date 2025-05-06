@@ -4,7 +4,9 @@ import React, { useState } from 'react'
 import { WalkInCustomerData } from '@/types/types'
 import { Button } from '@/components/common/Button'
 import { ViewCustomerListModal } from '@/layout/admin/sidebar/component/ViewCustomerListModal'
-import { ConfirmationModal } from '@/layout/admin/sidebar/component/ConfirmationModal' // Make sure this import path is correct
+import { ConfirmationModal } from '@/layout/admin/sidebar/component/ConfirmationModal'
+import { collection, db, getDocs, query, updateDoc, where } from '@/lib/firebase'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface CustomerListTableBodyProps {
   customers: WalkInCustomerData[]
@@ -18,6 +20,7 @@ export const CustomerListTableBody = ({
   const [selectedCustomer, setSelectedCustomer] = useState<WalkInCustomerData | null>(null)
   const [modalType, setModalType] = useState<'view' | 'confirm' | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const queryClient = useQueryClient()
 
   const handleSeeMore = (customer: WalkInCustomerData) => {
     setSelectedCustomer(customer)
@@ -38,6 +41,41 @@ export const CustomerListTableBody = ({
   const handleConfirmCompletion = async () => {
     if (!selectedCustomer) return
     setIsLoading(true)
+    try {
+      const q = query(
+        collection(db, 'customers'),
+        where('pcNumber', '==', selectedCustomer.pcNumber)
+      )
+      const querySnapshot = await getDocs(q)
+
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref
+        await updateDoc(docRef, {
+          action_status: 'Completed',
+        })
+
+        const pcQuery = query(
+          collection(db, 'pcs_list'),
+          where('pcNumber', '==', selectedCustomer.pcNumber)
+        )
+        const pcQuerySnapshot = await getDocs(pcQuery)
+        if (!pcQuerySnapshot.empty) {
+          const pcDocRef = pcQuerySnapshot.docs[0].ref
+          await updateDoc(pcDocRef, {
+            status: 'Available',
+          })
+        }
+
+        queryClient.invalidateQueries({ queryKey: ['customers'] })
+        queryClient.invalidateQueries({ queryKey: ['pcs_list'] })
+      }
+    } catch (error) {
+      console.error('Failed to update status:', error)
+      alert('Failed to update status. Please try again.')
+    } finally {
+      setIsLoading(false)
+      closeModal()
+    }
   }
 
   return (

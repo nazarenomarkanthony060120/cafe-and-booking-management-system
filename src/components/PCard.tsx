@@ -79,7 +79,6 @@ const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) =>
                 <WalkInCustomerModal
                   isOpen={isModalOpen}
                   onClose={closeModal}
-                  // id={id}
                   status={status}
                   pcNumber={pcNumber}
                   monitorType={monitorType}
