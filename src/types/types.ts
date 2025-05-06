@@ -37,4 +37,5 @@ export type WalkInCustomerData = {
   created_date: string
   updated_date: string
   monitorType: string
+  action_status: string
 }

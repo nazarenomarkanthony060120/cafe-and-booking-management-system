@@ -5,24 +5,24 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 interface ProtectedRouteProps {
-    children: React.ReactNode
+  children: React.ReactNode
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-    const { user } = useAuth()
-    const router = useRouter()
+  const { user } = useAuth()
+  const router = useRouter()
 
-    useEffect(() => {
-        if (!user) {
-            router.push('/login')
-        }
-    }, [user, router])
-
+  useEffect(() => {
     if (!user) {
-        return null
+      router.push('/login')
     }
+  }, [user, router])
 
-    return <>{children}</>
+  if (!user) {
+    return null
+  }
+
+  return <>{children}</>
 }
 
-export default ProtectedRoute 
+export default ProtectedRoute

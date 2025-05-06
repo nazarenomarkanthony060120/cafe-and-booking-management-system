@@ -28,7 +28,12 @@ const formatDateTime = (date: Date) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
-export const WalkInCustomerInputForm = ({ status, pcNumber, onClose, monitorType }: WalkInCustomerInputFormProps) => {
+export const WalkInCustomerInputForm = ({
+  status,
+  pcNumber,
+  onClose,
+  monitorType,
+}: WalkInCustomerInputFormProps) => {
   const [timeMode, setTimeMode] = useState<'open_time' | 'fixed_time'>('open_time')
   const [selectedDuration, setSelectedDuration] = useState<string | undefined>()
 
@@ -84,7 +89,8 @@ export const WalkInCustomerInputForm = ({ status, pcNumber, onClose, monitorType
       payment: '',
       created_date: formattedTime,
       updated_date: formattedTime,
-      monitorType: monitorType
+      monitorType: monitorType,
+      action_status: 'On-going',
     }
 
     if (timeMode === 'fixed_time' && selectedDuration) {

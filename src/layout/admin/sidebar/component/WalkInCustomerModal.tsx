@@ -23,7 +23,12 @@ const WalkInCustomerModal = ({
   return (
     <WalkInCustomerLayout isOpen={isOpen} onClose={onClose}>
       <WalkInCustomerHeader pcNumber={pcNumber} />
-      <WalkInCustomerInputForm status={status} pcNumber={pcNumber} onClose={onClose} monitorType={monitorType} />
+      <WalkInCustomerInputForm
+        status={status}
+        pcNumber={pcNumber}
+        onClose={onClose}
+        monitorType={monitorType}
+      />
     </WalkInCustomerLayout>
   )
 }

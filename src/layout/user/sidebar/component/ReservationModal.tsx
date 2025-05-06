@@ -7,7 +7,12 @@ interface ReservationModalProps {
   status: string
 }
 
-const ReservationModal: React.FC<ReservationModalProps> = ({ isOpen, onClose, pcNumber, status }) => {
+const ReservationModal: React.FC<ReservationModalProps> = ({
+  isOpen,
+  onClose,
+  pcNumber,
+  status,
+}) => {
   if (!isOpen) return null
 
   const userCredentialsSample = {

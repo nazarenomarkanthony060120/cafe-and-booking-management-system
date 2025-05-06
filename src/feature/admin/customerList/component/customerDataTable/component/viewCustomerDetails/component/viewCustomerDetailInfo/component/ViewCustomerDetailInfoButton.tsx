@@ -1,15 +1,14 @@
 import React from 'react'
 import { Button } from '@/components/common/Button'
-import { ConfirmationModal } from '@/layout/admin/sidebar/component/ConfirmationModal'
 import { WalkInCustomerData } from '@/types/types'
 import { collection, db, getDocs, query, updateDoc, where } from '@/lib/firebase'
+import { useQueryClient } from '@tanstack/react-query'
+import PaymentCalculation from '@/components/common/PaymentCalculation'
 
 interface ViewCustomerDetailInfoButtonProps {
   onClick: () => void
   customerData: WalkInCustomerData
-  showConfirmation: boolean
   onClose: () => void
-  handleConfirmComplete: () => void
   isLoading: boolean
   setIsLoading: (loading: boolean) => void
 }
@@ -17,12 +16,12 @@ interface ViewCustomerDetailInfoButtonProps {
 export const ViewCustomerDetailInfoButton = ({
   onClick,
   customerData,
-  showConfirmation,
   onClose,
-  handleConfirmComplete,
   isLoading,
   setIsLoading,
 }: ViewCustomerDetailInfoButtonProps) => {
+  const queryClient = useQueryClient()
+
   const formatDateTime = (date: Date) => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -33,36 +32,33 @@ export const ViewCustomerDetailInfoButton = ({
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
   }
 
-  const calculatePayment = (startTime: string, endTime: string) => {
-    if (!startTime || !endTime) return 0
-
-    const start = new Date(startTime)
-    const end = new Date(endTime)
-    const diffInHours = (end.getTime() - start.getTime()) / (1000 * 60 * 60)
-    const ratePerHour = 20
-    const payment = Math.ceil(diffInHours * ratePerHour)
-    return payment
-  }
-
   const handleLogout = async () => {
     setIsLoading(true)
     try {
       const currentDate = new Date()
       const formattedTime = formatDateTime(currentDate)
-      const payment = calculatePayment(customerData.start_time, formattedTime)
 
       const q = query(collection(db, 'customers'), where('pcNumber', '==', customerData.pcNumber))
       const querySnapshot = await getDocs(q)
 
       if (!querySnapshot.empty) {
         const docRef = querySnapshot.docs[0].ref
+        const payment = PaymentCalculation({
+          startTime: customerData.start_time,
+          endTime: formattedTime,
+          monitorType: customerData.monitorType,
+        })
+
         await updateDoc(docRef, {
           end_time: formattedTime,
           action_status: 'Waiting for Payment',
           updated_date: formattedTime,
-          payment: payment
+          payment: payment,
         })
+
+        queryClient.invalidateQueries({ queryKey: ['customers'] })
       }
+
       setIsLoading(false)
       onClose()
     } catch (error) {
@@ -115,13 +111,6 @@ export const ViewCustomerDetailInfoButton = ({
           onClick={onClick}
         />
       </div>
-      <ConfirmationModal
-        customerData={customerData}
-        isOpen={showConfirmation}
-        onClose={onClose}
-        onConfirm={handleConfirmComplete}
-        isLoading={isLoading}
-      />
     </div>
   )
 }

@@ -1,35 +1,26 @@
-import { WalkInCustomerData } from '@/types/types'
 import React from 'react'
+import { WalkInCustomerData } from '@/types/types'
 
-interface ViewCustomerDetailInfoDisplayProps {
+interface ConfirmCompletionDataResultProps {
   customerData: WalkInCustomerData
 }
 
-export const ViewCustomerDetailInfoDisplay = ({
-  customerData,
-}: ViewCustomerDetailInfoDisplayProps) => {
+export const ConfirmCompletionDataResult = ({ customerData }: ConfirmCompletionDataResultProps) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 mb-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Status</label>
         <input
           type="text"
           value={customerData.action_status}
           readOnly
-          className={`w-full px-3 py-2 border border-gray-300 rounded-md ${
-            customerData.action_status === 'On-going'
-              ? 'bg-yellow-50'
-              : customerData.action_status === 'Waiting for Payment'
-                ? 'bg-red-50'
-                : customerData.action_status === 'Completed'
-                  ? 'bg-green-50'
-                  : 'bg-gray-50'
-          }`}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-red-500"
         />
       </div>
-
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Name</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+          Customer Name
+        </label>
         <input
           type="text"
           value={customerData.name}
@@ -43,9 +34,9 @@ export const ViewCustomerDetailInfoDisplay = ({
         </label>
         <input
           type="text"
-          value={customerData.contactNumber || '--'}
+          value={customerData.contactNumber}
           readOnly
-          className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 ${!customerData.contactNumber ? 'text-center' : ''}`}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
         />
       </div>
       <div>
@@ -69,18 +60,21 @@ export const ViewCustomerDetailInfoDisplay = ({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Time Mode</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">Start Time</label>
         <input
           type="text"
-          value={
-            customerData.time_mode === 'fixed_time'
-              ? 'Fix Time'
-              : customerData.time_mode === 'open_time'
-                ? 'Open Time'
-                : ''
-          }
+          value={customerData.start_time}
           readOnly
-          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1 text-left">End Time</label>
+        <input
+          type="text"
+          value={customerData.end_time}
+          readOnly
+          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
         />
       </div>
     </div>
