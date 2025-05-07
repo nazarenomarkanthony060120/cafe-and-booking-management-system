@@ -9,14 +9,7 @@ interface GroupReservationModalProps {
   pcs: { pcName: string }[]
 }
 
-const GroupReservationModal: React.FC<GroupReservationModalProps> = ({
-  isOpen,
-  onClose,
-  // id,
-  // status,
-  // email,
-  pcs,
-}) => {
+const GroupReservationModal = ({ isOpen, onClose, id, status, email, pcs }: GroupReservationModalProps) => {
   const userCredentialsSample = {
     name: 'Example name',
     email: 'sample_email@gmail.com',

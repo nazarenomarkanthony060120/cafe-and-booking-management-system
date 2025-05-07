@@ -39,3 +39,14 @@ export type WalkInCustomerData = {
   monitorType: string
   action_status: string
 }
+
+export type ReservationData = {
+  pcNumber: string
+  reservation_status: string
+  name: string
+  email: string
+  contactNumber: string
+  start_time: string
+  reservation_time: string
+  monitorType: string
+}
