@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import pcLogo from '@/assets/images/pc-icon.png'
 import Image from 'next/image'
 import { Button } from '@/components/common/Button'
-import ReservationModal from '@/layout/user/sidebar/component/ReservationModal'
 import PcDetailsModal from '@/layout/admin/sidebar/component/PcDetailsModal'
 import WalkInCustomerModal from '@/layout/admin/sidebar/component/WalkInCustomerModal'
+import { DocumentData } from 'firebase/firestore'
+import { ReservationModal } from '@/layout/user/sidebar/component/ReservationModal'
 
 interface PCCardProps {
   status: string
@@ -12,9 +13,10 @@ interface PCCardProps {
   source?: string
   pcNumber: string
   monitorType: string
+  userData?: DocumentData
 }
 
-const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) => {
+const PCard = ({ status, email, source, pcNumber, monitorType, userData }: PCCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   let statusClass = ''
@@ -48,17 +50,8 @@ const PCard = ({ status, email, source, pcNumber, monitorType }: PCCardProps) =>
           <p className="text-sm">{status}</p>
           {showViewButton && status === 'Available' && email !== 'admin@email.com' && (
             <>
-              <Button
-                text="View More"
-                className="text-sm text-red-800 hover:underline transition"
-                onClick={openModal}
-              />
-              <ReservationModal
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                pcNumber={pcNumber}
-                status={status}
-              />
+              <Button text="View More" className="text-sm text-red-800 hover:underline transition" onClick={openModal} />
+              <ReservationModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} userData={userData} monitorType={monitorType} />
             </>
           )}
           {showViewButton && status === 'Available' && email === 'admin@email.com' && (
