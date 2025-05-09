@@ -1,275 +1,183 @@
 'use client'
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
-  Label,
-  Pie,
-  PieChart,
+  Tooltip,
+  BarChart,
+  Bar,
 } from 'recharts'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/lib/firebase' // adjust this path based on your Firebase config
+import { format, parseISO, startOfWeek, startOfMonth } from 'date-fns'
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+export default function Reports() {
+  const [dailyRevenue, setDailyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [weeklyRevenue, setWeeklyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [monthlyRevenue, setMonthlyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [peakHoursData, setPeakHoursData] = useState<{ hour: string; users: number }[]>([])
+  const [mostBookedPCs, setMostBookedPCs] = useState<{ pc: string; bookings: number }[]>([])
 
-const lineChartData = [
-  { name: 'Jan', value: 400 },
-  { name: 'Feb', value: 300 },
-  { name: 'Mar', value: 200 },
-  { name: 'Apr', value: 278 },
-  { name: 'May', value: 189 },
-  { name: 'Jun', value: 239 },
-  { name: 'Jul', value: 349 },
-  { name: 'Aug', value: 600 },
-]
+  useEffect(() => {
+    const fetchData = async () => {
+      const snapshot = await getDocs(collection(db, 'customers'))
+      const customers = snapshot.docs.map((doc) => doc.data())
 
-const barChartData = [
-  { name: 'Mon', value: 300 },
-  { name: 'Tue', value: 400 },
-  { name: 'Wed', value: 300 },
-  { name: 'Thu', value: 200 },
-  { name: 'Fri', value: 400 },
-  { name: 'Sat', value: 500 },
-  { name: 'Sun', value: 300 },
-]
+      const dailyMap: Record<string, number> = {}
+      const weeklyMap: Record<string, number> = {}
+      const monthlyMap: Record<string, number> = {}
+      const hourMap: Record<string, number> = {}
+      const pcMap: Record<string, number> = {}
 
-const chartData = [
-  { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
-  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
-  { browser: 'firefox', visitors: 287, fill: 'var(--color-firefox)' },
-  { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
-  { browser: 'other', visitors: 190, fill: 'var(--color-other)' },
-]
-const chartConfig = {
-  visitors: {
-    label: 'Visitors',
-  },
-  chrome: {
-    label: 'Chrome',
-    color: 'hsl(var(--chart-1))',
-  },
-  safari: {
-    label: 'Safari',
-    color: 'hsl(var(--chart-2))',
-  },
-  firefox: {
-    label: 'Firefox',
-    color: 'hsl(var(--chart-3))',
-  },
-  edge: {
-    label: 'Edge',
-    color: 'hsl(var(--chart-4))',
-  },
-  other: {
-    label: 'Other',
-    color: 'hsl(var(--chart-5))',
-  },
-} satisfies ChartConfig
+      for (const c of customers) {
+        const date = parseISO(c.created_date.replace(' ', 'T'))
+        const day = format(date, 'EEE')
+        const week = format(startOfWeek(date), "'Week of' MMM d")
+        const month = format(startOfMonth(date), 'MMM')
 
-export default function Bills() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+        const payment = parseFloat(c.payment)
+        if (!isNaN(payment)) {
+          dailyMap[day] = (dailyMap[day] || 0) + payment
+          weeklyMap[week] = (weeklyMap[week] || 0) + payment
+          monthlyMap[month] = (monthlyMap[month] || 0) + payment
+        }
+
+        const hour = format(date, 'ha')
+        hourMap[hour] = (hourMap[hour] || 0) + 1
+
+        const pc = `PC-${c.pcNumber}`
+        pcMap[pc] = (pcMap[pc] || 0) + 1
+      }
+
+      const toSortedArray = <T extends { [K in keyof T]: string | number }>(
+        map: Record<string, number>,
+        key: keyof T,
+        value: keyof T
+      ): T[] =>
+        Object.entries(map)
+          .map(([k, v]) => {
+            const numericValue = typeof v === 'number' ? v : parseFloat(v as any)
+            return {
+              [key]: k,
+              [value]: Number.isFinite(numericValue) ? parseFloat(numericValue.toFixed(2)) : 0,
+            } as T
+          })
+          .sort((a, b) => {
+            if (key === 'hour') {
+              const hourA = parseInt(String(a[key]).replace(/\D/g, ''), 10)
+              const hourB = parseInt(String(b[key]).replace(/\D/g, ''), 10)
+              return hourA - hourB
+            }
+            return 0
+          })
+
+      setDailyRevenue(toSortedArray(dailyMap, 'name', 'value'))
+      setWeeklyRevenue(toSortedArray(weeklyMap, 'name', 'value'))
+      setMonthlyRevenue(toSortedArray(monthlyMap, 'name', 'value'))
+
+      const peakHours = toSortedArray(hourMap, 'hour', 'users')
+      setPeakHoursData(peakHours)
+
+      const topPCs = toSortedArray(pcMap, 'pc', 'bookings').sort((a, b) => b.bookings - a.bookings)
+      setMostBookedPCs(topPCs.slice(0, 5))
+    }
+
+    fetchData()
   }, [])
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl mx-auto px-4 mt-8">
-      {/* Top cards */}
-      <div className="flex flex-col md:flex-row gap-6">
-        <Card className="flex-1 bg-[#5041bc] text-white rounded- shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-white text-sm font-medium">Completed</CardTitle>
-            <div className="text-3xl font-bold">+2350</div>
-            <CardDescription className="text-green-500">+180.1% from last month</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
-              <PieChart>
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Pie
-                  data={chartData}
-                  dataKey="visitors"
-                  nameKey="browser"
-                  innerRadius={60}
-                  strokeWidth={5}
-                >
-                  <Label
-                    content={({ viewBox }) => {
-                      if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                        return (
-                          <text
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                          >
-                            <tspan
-                              x={viewBox.cx}
-                              y={viewBox.cy}
-                              className="fill-foreground text-3xl font-bold"
-                            >
-                              {totalVisitors.toLocaleString()}
-                            </tspan>
-                            <tspan
-                              x={viewBox.cx}
-                              y={(viewBox.cy || 0) + 24}
-                              className="fill-muted-foreground"
-                            >
-                              Visitors
-                            </tspan>
-                          </text>
-                        )
-                      }
+    <div className="flex flex-col gap-8 max-w-6xl mx-auto px-4 mt-10">
+      {/* Revenue Section */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {[
+          { title: 'Daily Revenue', data: dailyRevenue },
+          { title: 'Weekly Revenue', data: weeklyRevenue },
+          { title: 'Monthly Revenue', data: monthlyRevenue },
+        ].map(({ title, data }) => (
+          <Card key={title} className="bg-[#5041bc] text-white shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-white text-sm font-medium">{title}</CardTitle>
+              <CardDescription className="text-white text-xs">Revenue Trends</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={data}>
+                  <XAxis dataKey="name" stroke="#ffffff" />
+                  <YAxis stroke="#ffffff" />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#4ade80"
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1f2937',
+                      borderRadius: '6px',
+                      border: '1px solid #4ade80',
                     }}
                   />
-                </Pie>
-              </PieChart>
-            </ChartContainer>
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Peak Hours & Booked PCs */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="bg-[#5041bc] text-white shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-white text-sm font-medium">Peak Hours Analysis</CardTitle>
+            <CardDescription className="text-white text-xs">User Activity per Hour</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={peakHoursData}>
+                <XAxis dataKey="hour" stroke="#ffffff" />
+                <YAxis stroke="#ffffff" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1f2937',
+                    borderRadius: '6px',
+                    border: '1px solid #60a5fa',
+                  }}
+                />
+                <Bar dataKey="users" fill="#60a5fa" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card className="flex-1 bg-[#5041bc] text-white rounded- shadow-lg">
+
+        <Card className="bg-[#5041bc] text-white shadow-lg">
           <CardHeader>
-            <CardTitle className="text-white text-sm font-medium">In - Use</CardTitle>
-            <div className="text-3xl font-bold">+2350</div>
-            <CardDescription className="text-green-500">+180.1% from last month</CardDescription>
+            <CardTitle className="text-white text-sm font-medium">Most Booked PCs</CardTitle>
+            <CardDescription className="text-white text-xs">Top Used Machines</CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
-              <PieChart>
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Pie
-                  data={chartData}
-                  dataKey="visitors"
-                  nameKey="browser"
-                  innerRadius={60}
-                  strokeWidth={5}
-                >
-                  <Label
-                    content={({ viewBox }) => {
-                      if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                        return (
-                          <text
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                          >
-                            <tspan
-                              x={viewBox.cx}
-                              y={viewBox.cy}
-                              className="fill-foreground text-3xl font-bold"
-                            >
-                              {totalVisitors.toLocaleString()}
-                            </tspan>
-                            <tspan
-                              x={viewBox.cx}
-                              y={(viewBox.cy || 0) + 24}
-                              className="fill-muted-foreground"
-                            >
-                              Visitors
-                            </tspan>
-                          </text>
-                        )
-                      }
-                    }}
-                  />
-                </Pie>
-              </PieChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        <Card className="flex-1 bg-[#5041bc] text-white rounded- shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-white text-sm font-medium">Customer</CardTitle>
-            <div className="text-3xl font-bold">+2350</div>
-            <CardDescription className="text-green-500">+180.1% from last month</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
-              <PieChart>
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Pie
-                  data={chartData}
-                  dataKey="visitors"
-                  nameKey="browser"
-                  innerRadius={60}
-                  strokeWidth={5}
-                >
-                  <Label
-                    content={({ viewBox }) => {
-                      if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                        return (
-                          <text
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                          >
-                            <tspan
-                              x={viewBox.cx}
-                              y={viewBox.cy}
-                              className="fill-foreground text-3xl font-bold"
-                            >
-                              {totalVisitors.toLocaleString()}
-                            </tspan>
-                            <tspan
-                              x={viewBox.cx}
-                              y={(viewBox.cy || 0) + 24}
-                              className="fill-muted-foreground"
-                            >
-                              Visitors
-                            </tspan>
-                          </text>
-                        )
-                      }
-                    }}
-                  />
-                </Pie>
-              </PieChart>
-            </ChartContainer>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={mostBookedPCs}>
+                <XAxis dataKey="pc" stroke="#ffffff" />
+                <YAxis stroke="#ffffff" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1f2937',
+                    borderRadius: '6px',
+                    border: '1px solid #facc15',
+                  }}
+                />
+                <Bar dataKey="bookings" fill="#facc15" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
-
-      {/* Graph below cards */}
-      <Card className="bg-[#5041bc] text-white rounded-2xl shadow-lg mb-5">
-        <CardHeader>
-          <CardTitle className="text-white text-sm font-medium">Overall Performance</CardTitle>
-          <CardDescription className="text-white">Monthly Overview</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={lineChartData}>
-              <XAxis dataKey="name" stroke="#ffffff" />
-              <YAxis stroke="#ffffff" />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#4ade80"
-                strokeWidth={3}
-                dot={{ r: 4 }}
-              />
-              <Tooltip
-                cursor={{ stroke: 'white', strokeWidth: 1 }}
-                contentStyle={{
-                  backgroundColor: 'black',
-                  borderRadius: '8px',
-                  border: '1px solid #4ade80',
-                }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
     </div>
   )
 }
