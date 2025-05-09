@@ -5,6 +5,7 @@ import { getPcList } from './addPcAdmin/getPcList'
 import { customerData } from './customerData/customerData'
 import { getCustomerData } from './customerData/getCustomerData'
 import { reservationData } from './reservationData/reservationData'
+import { getReservationData } from './reservationData/getReservationData'
 
 export const api = {
   register: registerUser,
@@ -15,4 +16,5 @@ export const api = {
   customerData: customerData,
   getCustomerData: getCustomerData,
   reservationData: reservationData,
+  getReservationData: getReservationData,
 }
