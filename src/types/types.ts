@@ -46,7 +46,9 @@ export type ReservationData = {
   name: string
   email: string
   contactNumber: string
-  start_time: string
   reservation_time: string
   monitorType: string
+  time_mode: string
+  duration?: string
+  reservation_type: string
 }

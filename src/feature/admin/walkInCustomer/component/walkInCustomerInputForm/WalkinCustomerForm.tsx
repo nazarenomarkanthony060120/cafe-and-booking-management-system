@@ -36,7 +36,6 @@ export const WalkInCustomerInputForm = ({
 }: WalkInCustomerInputFormProps) => {
   const [timeMode, setTimeMode] = useState<'open_time' | 'fixed_time'>('open_time')
   const [selectedDuration, setSelectedDuration] = useState<string | undefined>()
-
   const {
     register,
     handleSubmit,

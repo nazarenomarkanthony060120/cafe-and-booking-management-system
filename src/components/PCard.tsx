@@ -50,8 +50,19 @@ const PCard = ({ status, email, source, pcNumber, monitorType, userData }: PCCar
           <p className="text-sm">{status}</p>
           {showViewButton && status === 'Available' && email !== 'admin@email.com' && (
             <>
-              <Button text="View More" className="text-sm text-red-800 hover:underline transition" onClick={openModal} />
-              <ReservationModal isOpen={isModalOpen} onClose={closeModal} pcNumber={pcNumber} status={status} userData={userData} monitorType={monitorType} />
+              <Button
+                text="View More"
+                className="text-sm text-red-800 hover:underline transition"
+                onClick={openModal}
+              />
+              <ReservationModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                pcNumber={pcNumber}
+                status={status}
+                userData={userData}
+                monitorType={monitorType}
+              />
             </>
           )}
           {showViewButton && status === 'Available' && email === 'admin@email.com' && (
