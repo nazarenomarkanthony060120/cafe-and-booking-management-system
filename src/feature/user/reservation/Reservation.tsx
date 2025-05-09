@@ -26,16 +26,20 @@ const Reservation = () => {
     direction: 'ascending',
   })
 
-  const { data: reservationDataResult = [], isLoading, error } = useQuery<ReservationData[]>({
+  const {
+    data: reservationDataResult = [],
+    isLoading,
+    error,
+  } = useQuery<ReservationData[]>({
     queryKey: ['reservationDataResult', user?.email],
     queryFn: async () => {
       const data = await getReservationData()
-      return data.filter(reservation => reservation.email === user?.email) as ReservationData[]
+      return data.filter((reservation) => reservation.email === user?.email) as ReservationData[]
     },
     enabled: !!user?.email,
   })
 
-  console.log("reservationDataResult", reservationDataResult)
+  console.log('reservationDataResult', reservationDataResult)
 
   // Sort function
   const sortData = (data: ReservationData[]) => {
@@ -106,11 +110,21 @@ const Reservation = () => {
       {/* User Reservation Table Part */}
       <UserReservationListTableLayout>
         <UserReserrvationListHeader requestSort={requestSort} getSortIndicator={getSortIndicator} />
-        <UserReservationDataResult reservationDataResult={currentRows} startingRowNumber={indexOfFirstRow} />
+        <UserReservationDataResult
+          reservationDataResult={currentRows}
+          startingRowNumber={indexOfFirstRow}
+        />
       </UserReservationListTableLayout>
 
       {/* Pagination Part */}
-      <UserReservationPagination indexOfFirstRow={indexOfFirstRow} indexOfLastRow={indexOfLastRow} filteredData={filteredData} paginate={paginate} currentPage={currentPage} totalPages={totalPages} />
+      <UserReservationPagination
+        indexOfFirstRow={indexOfFirstRow}
+        indexOfLastRow={indexOfLastRow}
+        filteredData={filteredData}
+        paginate={paginate}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
     </UserReservationListContainer>
   )
 }

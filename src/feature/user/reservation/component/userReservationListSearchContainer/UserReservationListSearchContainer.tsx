@@ -5,15 +5,18 @@ import { UserReservationSearchInput } from './component/userReservationSearchInp
 import { UserReservationSearchSvgLayout } from './component/userReservationSearchSvgLayout/UserReservationSearchSvgLayout'
 
 interface UserReservationListSearchContainerProps {
-    searchTerm: string
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  searchTerm: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const UserReservationListSearchContainer = ({ searchTerm, onChange }: UserReservationListSearchContainerProps) => {
-    return (
-        <UserReservationSearchLayout>
-            <UserReservationSearchInput searchTerm={searchTerm} onChange={onChange} />
-            <UserReservationSearchSvgLayout />
-        </UserReservationSearchLayout>
-    )
+export const UserReservationListSearchContainer = ({
+  searchTerm,
+  onChange,
+}: UserReservationListSearchContainerProps) => {
+  return (
+    <UserReservationSearchLayout>
+      <UserReservationSearchInput searchTerm={searchTerm} onChange={onChange} />
+      <UserReservationSearchSvgLayout />
+    </UserReservationSearchLayout>
+  )
 }
