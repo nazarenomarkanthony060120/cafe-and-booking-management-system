@@ -17,11 +17,11 @@ import { db } from '@/lib/firebase' // adjust this path based on your Firebase c
 import { format, parseISO, startOfWeek, startOfMonth } from 'date-fns'
 
 export default function Reports() {
-  const [dailyRevenue, setDailyRevenue] = useState([])
-  const [weeklyRevenue, setWeeklyRevenue] = useState([])
-  const [monthlyRevenue, setMonthlyRevenue] = useState([])
-  const [peakHoursData, setPeakHoursData] = useState([])
-  const [mostBookedPCs, setMostBookedPCs] = useState([])
+  const [dailyRevenue, setDailyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [weeklyRevenue, setWeeklyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [monthlyRevenue, setMonthlyRevenue] = useState<{ name: string; value: number }[]>([])
+  const [peakHoursData, setPeakHoursData] = useState<{ hour: string; users: number }[]>([])
+  const [mostBookedPCs, setMostBookedPCs] = useState<{ pc: string; bookings: number }[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,19 +54,23 @@ export default function Reports() {
         pcMap[pc] = (pcMap[pc] || 0) + 1
       }
 
-      const toSortedArray = (map: Record<string, number>, key: string, value: string) =>
+      const toSortedArray = <T extends { [K in keyof T]: string | number }>(
+        map: Record<string, number>,
+        key: keyof T,
+        value: keyof T
+      ): T[] =>
         Object.entries(map)
           .map(([k, v]) => {
             const numericValue = typeof v === 'number' ? v : parseFloat(v as any)
             return {
               [key]: k,
               [value]: Number.isFinite(numericValue) ? parseFloat(numericValue.toFixed(2)) : 0,
-            }
+            } as T
           })
           .sort((a, b) => {
             if (key === 'hour') {
-              const hourA = parseInt(a.hour.replace(/\D/g, ''), 10)
-              const hourB = parseInt(b.hour.replace(/\D/g, ''), 10)
+              const hourA = parseInt(String(a[key]).replace(/\D/g, ''), 10)
+              const hourB = parseInt(String(b[key]).replace(/\D/g, ''), 10)
               return hourA - hourB
             }
             return 0
