@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import { ReservationData } from '@/types/types'
 import { Button } from '@/components/common/Button'
+import { ViewUserReservationData } from '@/layout/user/sidebar/component/ViewUserReservationData'
+import { CancelledReservationModal } from '@/layout/user/sidebar/component/CancelledReservationModal'
 
 interface UserReservationDataResultProps {
   reservationDataResult: ReservationData[]
@@ -13,6 +15,26 @@ export const UserReservationDataResult = ({
   reservationDataResult,
   startingRowNumber,
 }: UserReservationDataResultProps) => {
+  const [selectedReservation, setSelectedReservation] = useState<ReservationData | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false)
+
+  const handleOpenModal = (reservation: ReservationData) => {
+    if (reservation.reservation_status === 'pending') {
+      setSelectedReservation(reservation)
+      setIsModalOpen(true)
+    } else if (reservation.reservation_status === 'cancelled') {
+      setSelectedReservation(reservation)
+      setIsCancelledModalOpen(true)
+    }
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setIsCancelledModalOpen(false)
+    setSelectedReservation(null)
+  }
+
   return (
     <>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -72,11 +94,26 @@ export const UserReservationDataResult = ({
               <Button
                 text="See More"
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                onClick={() => handleOpenModal(reservationDataResult)}
               />
             </td>
           </tr>
         ))}
       </tbody>
+      {selectedReservation && (
+        <>
+          <ViewUserReservationData
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+          <CancelledReservationModal
+            isOpen={isCancelledModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+        </>
+      )}
     </>
   )
 }

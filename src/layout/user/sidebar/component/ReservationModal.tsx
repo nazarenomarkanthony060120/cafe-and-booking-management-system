@@ -6,7 +6,7 @@ import { SingleReservationLayout } from '@/feature/user/dashboard/component/sing
 import { SingleReservationForm } from '@/feature/user/dashboard/component/singleReservation/singleReservationForm/SingleReservationForm'
 import { api } from '@/api/api'
 import { ReservationData } from '@/types/types'
-import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { doc, updateDoc, collection, query, where, getDocs, addDoc } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { useQueryClient } from '@tanstack/react-query'
 import { SingleReservationButton } from '@/feature/user/dashboard/component/singleReservation/singleReservationButton/SingleReservationButton'
@@ -19,6 +19,16 @@ interface ReservationModalProps {
   userData?: DocumentData
   monitorType: string
 }
+
+const DATE_FORMAT_OPTIONS = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+} as const
 
 export const ReservationModal = ({
   isOpen,
@@ -55,9 +65,15 @@ export const ReservationModal = ({
         time_mode: timeMode,
         duration: timeMode === 'open_time' ? 'open' : selectedDuration || '',
         reservation_type: 'single-reservation',
+        reservation_date: new Date().toLocaleString('en-US', DATE_FORMAT_OPTIONS).replace(',', ''),
+        reservation_updated_date: new Date()
+          .toLocaleString('en-US', DATE_FORMAT_OPTIONS)
+          .replace(',', ''),
+        uid: userData.uid,
       }
 
-      await api.reservationData(reservation)
+      const docRef = await addDoc(collection(db, 'reservation'), reservation)
+      await updateDoc(docRef, { id: docRef.id })
 
       const pcsRef = collection(db, 'pcs_list')
       const q = query(pcsRef, where('pcNumber', '==', pcNumber))
