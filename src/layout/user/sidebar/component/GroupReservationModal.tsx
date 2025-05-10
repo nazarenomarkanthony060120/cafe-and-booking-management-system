@@ -18,6 +18,16 @@ interface GroupReservationModalProps {
   userData?: DocumentData
 }
 
+const DATE_FORMAT_OPTIONS = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+} as const
+
 export const GroupReservationModal = ({
   onClose,
   userData,
@@ -71,6 +81,11 @@ export const GroupReservationModal = ({
         time_mode: timeMode,
         duration: timeMode === 'open_time' ? '' : selectedDuration || '',
         reservation_type: 'group-reservation',
+        reservation_date: new Date().toLocaleString('en-US', DATE_FORMAT_OPTIONS).replace(',', ''),
+        reservation_updated_date: new Date()
+          .toLocaleString('en-US', DATE_FORMAT_OPTIONS)
+          .replace(',', ''),
+        uid: userData?.uid,
       }
 
       await api.reservationData(reservation)

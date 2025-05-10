@@ -41,6 +41,7 @@ export type WalkInCustomerData = {
 }
 
 export type ReservationData = {
+  cancelled_date?: string
   pcNumber: string
   reservation_status: string
   name: string
@@ -51,4 +52,8 @@ export type ReservationData = {
   time_mode: string
   duration?: string
   reservation_type: string
+  reservation_date: string
+  reservation_updated_date: string
+  uid: string
+  id?: string
 }

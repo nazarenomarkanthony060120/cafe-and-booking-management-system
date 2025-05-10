@@ -51,10 +51,21 @@ export const registerUser = async (data: RegisterFormValues) => {
 }
 
 const addUser = async (user: RegisterFormValues, uid: string) => {
-  return await setDoc(doc(db, 'users', uid), {
-    ...user,
-    ctype: 'user',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  })
+  try {
+    const userData = {
+      ...user,
+      uid: uid,
+      ctype: 'user',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+
+    console.log('Saving user data:', userData)
+
+    await setDoc(doc(db, 'users', uid), userData)
+    console.log('User data saved successfully')
+  } catch (error) {
+    console.error('Error saving user data:', error)
+    throw error
+  }
 }
