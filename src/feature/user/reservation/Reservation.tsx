@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react'
-import { getCustomerData } from '@/api/customerData/getCustomerData'
 import { useQuery } from '@tanstack/react-query'
 import { ReservationData } from '@/types/types'
 import { UserReservationListContainer } from './component/userReservationListContainer/UserReservationListContainer'

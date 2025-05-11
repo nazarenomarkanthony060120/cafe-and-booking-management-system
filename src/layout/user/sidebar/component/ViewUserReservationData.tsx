@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button } from '@/components/common/Button'
 import { ReservationData } from '@/types/types'
 import { useQueryClient } from '@tanstack/react-query'
 import { doc, updateDoc, db, getDoc, collection, query, where, getDocs } from '@/lib/firebase'
@@ -66,6 +65,7 @@ export const ViewUserReservationData = ({
           .toLocaleString('en-US', DATE_FORMAT_OPTIONS)
           .replace(',', ''),
         cancelled_date: new Date().toLocaleString('en-US', DATE_FORMAT_OPTIONS).replace(',', ''),
+        reason: 'Cancelled by user',
       })
 
       await queryClient.invalidateQueries({ queryKey: ['reservationDataResult'] })
