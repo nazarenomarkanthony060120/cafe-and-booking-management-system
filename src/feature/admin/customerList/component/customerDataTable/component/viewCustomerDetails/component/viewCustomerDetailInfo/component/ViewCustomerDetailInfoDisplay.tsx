@@ -8,6 +8,7 @@ interface ViewCustomerDetailInfoDisplayProps {
 export const ViewCustomerDetailInfoDisplay = ({
   customerData,
 }: ViewCustomerDetailInfoDisplayProps) => {
+  console.log(customerData)
   return (
     <div className="space-y-3">
       <div>
@@ -83,6 +84,32 @@ export const ViewCustomerDetailInfoDisplay = ({
           className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
         />
       </div>
+      {customerData?.action_status === 'Completed' && (
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+              Payment
+            </label>
+            <input
+              type="text"
+              value={customerData?.payment}
+              readOnly
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 text-left">
+              Completed Date
+            </label>
+            <input
+              type="text"
+              value={customerData?.updated_date}
+              readOnly
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white"
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }
