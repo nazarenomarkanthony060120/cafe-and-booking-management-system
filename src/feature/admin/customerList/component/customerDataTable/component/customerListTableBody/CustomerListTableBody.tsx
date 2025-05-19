@@ -28,6 +28,8 @@ export const CustomerListTableBody = ({
       setModalType('view')
     } else if (customer.action_status === 'Waiting for Payment') {
       setModalType('confirm')
+    } else if (customer.action_status === 'Completed') {
+      setModalType('view')
     } else {
       setModalType(null)
     }
