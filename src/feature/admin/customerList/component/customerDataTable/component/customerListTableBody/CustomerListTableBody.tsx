@@ -56,16 +56,22 @@ export const CustomerListTableBody = ({
           action_status: 'Completed',
         })
 
-        const pcQuery = query(
-          collection(db, 'pcs_list'),
-          where('pcNumber', '==', selectedCustomer.pcNumber)
-        )
-        const pcQuerySnapshot = await getDocs(pcQuery)
-        if (!pcQuerySnapshot.empty) {
-          const pcDocRef = pcQuerySnapshot.docs[0].ref
-          await updateDoc(pcDocRef, {
-            status: 'Available',
-          })
+        const pcNumbers = Array.isArray(selectedCustomer.pcNumber)
+          ? selectedCustomer.pcNumber
+          : [selectedCustomer.pcNumber]
+
+        for (const pcNum of pcNumbers) {
+          const pcQuery = query(
+            collection(db, 'pcs_list'),
+            where('pcNumber', '==', String(pcNum))
+          )
+          const pcQuerySnapshot = await getDocs(pcQuery)
+          if (!pcQuerySnapshot.empty) {
+            const pcDocRef = pcQuerySnapshot.docs[0].ref
+            await updateDoc(pcDocRef, {
+              status: 'Available',
+            })
+          }
         }
 
         queryClient.invalidateQueries({ queryKey: ['customers'] })
@@ -92,7 +98,7 @@ export const CustomerListTableBody = ({
               {startingRowNumber + index + 1}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-              {customer.pcNumber}
+              {String(customer.pcNumber).split(' , ')}
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
               {customer.name}
@@ -112,15 +118,14 @@ export const CustomerListTableBody = ({
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-center">
               <span
-                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  customer.action_status === 'On-going'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : customer.action_status === 'Waiting for Payment'
-                      ? 'bg-red-100 text-red-800'
-                      : customer.action_status === 'Completed'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                }`}
+                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${customer.action_status === 'On-going'
+                  ? 'bg-yellow-100 text-yellow-800'
+                  : customer.action_status === 'Waiting for Payment'
+                    ? 'bg-red-100 text-red-800'
+                    : customer.action_status === 'Completed'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
               >
                 {customer.action_status}
               </span>

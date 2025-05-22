@@ -43,6 +43,8 @@ export type WalkInCustomerData = {
 export type ReservationData = {
   cancelled_date?: string
   approved_date?: string
+  incomplete_date?: string
+  complete_date?: string
   pcNumber: string
   reservation_status: string
   name: string
