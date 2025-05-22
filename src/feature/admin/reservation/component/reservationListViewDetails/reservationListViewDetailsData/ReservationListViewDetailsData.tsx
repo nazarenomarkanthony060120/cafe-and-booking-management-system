@@ -5,9 +5,7 @@ interface ReservationListViewDetailsDataProps {
   reservationData: ReservationData
 }
 
-export const ReservationListViewDetailsData = ({
-  reservationData,
-}: ReservationListViewDetailsDataProps) => {
+export const ReservationListViewDetailsData = ({ reservationData }: ReservationListViewDetailsDataProps) => {
   return (
     <div className="space-y-3">
       <div>

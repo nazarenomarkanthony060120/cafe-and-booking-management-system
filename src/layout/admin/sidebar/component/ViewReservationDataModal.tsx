@@ -30,28 +30,26 @@ export const ViewReservationDataModal = ({
 }: ViewReservationDataModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const queryClient = useQueryClient()
+
   const handleCancelReservation = async () => {
     setIsLoading(true)
     try {
       const reservationRef = doc(db, 'reservation', reservationData.id!)
 
-      // Split the PC numbers if there are multiple
       const pcNumbers = reservationData.pcNumber.split(',').map((num) => num.trim())
 
-      // Update each PC's status individually
       for (const pcNumber of pcNumbers) {
         const pcsQuery = query(collection(db, 'pcs_list'), where('pcNumber', '==', pcNumber))
         const querySnapshot = await getDocs(pcsQuery)
 
         if (querySnapshot.empty) {
           console.error(`PC ${pcNumber} does not exist in pcs_list collection`)
-          continue // Skip this PC and continue with others
+          continue
         }
 
         const pcDoc = querySnapshot.docs[0]
         const pcsListUpdate = doc(db, 'pcs_list', pcDoc.id)
 
-        // Update PC status to Available
         await updateDoc(pcsListUpdate, {
           status: 'Available',
         })
@@ -74,22 +72,21 @@ export const ViewReservationDataModal = ({
       setIsLoading(false)
     }
   }
+
   const handleApproveReservation = async () => {
     setIsLoading(true)
     try {
       const reservationRef = doc(db, 'reservation', reservationData.id!)
 
-      // Split the PC numbers if there are multiple
       const pcNumbers = reservationData.pcNumber.split(',').map((num) => num.trim())
 
-      // Update each PC's status individually
       for (const pcNumber of pcNumbers) {
         const pcsQuery = query(collection(db, 'pcs_list'), where('pcNumber', '==', pcNumber))
         const querySnapshot = await getDocs(pcsQuery)
 
         if (querySnapshot.empty) {
           console.error(`PC ${pcNumber} does not exist in pcs_list collection`)
-          continue // Skip this PC and continue with others
+          continue
         }
 
         const pcDoc = querySnapshot.docs[0]

@@ -5,6 +5,7 @@ import { ReservationData } from '@/types/types'
 import { Button } from '@/components/common/Button'
 import { ViewReservationDataModal } from '@/layout/admin/sidebar/component/ViewReservationDataModal'
 import { ViewCancelledReservationModal } from '@/layout/admin/sidebar/component/ViewCancelledReservationModal'
+import { WaitingArrivalModal } from '@/layout/admin/sidebar/component/WaitinArrivalModal'
 
 interface ReservationListDataResultProps {
   reservationData: ReservationData[]
@@ -18,6 +19,7 @@ export const ReservationListDataResult = ({
   const [selectedReservation, setSelectedReservation] = useState<ReservationData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false)
+  const [isWaitingModalOpen, setIsWaitingModalOpen] = useState(false)
 
   const handleOpenModal = (reservation: ReservationData) => {
     if (reservation.reservation_status === 'pending') {
@@ -26,12 +28,16 @@ export const ReservationListDataResult = ({
     } else if (reservation.reservation_status === 'cancelled') {
       setSelectedReservation(reservation)
       setIsCancelledModalOpen(true)
+    } else if (reservation.reservation_status === 'approved') {
+      setSelectedReservation(reservation)
+      setIsWaitingModalOpen(true)
     }
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setIsCancelledModalOpen(false)
+    setIsWaitingModalOpen(false)
     setSelectedReservation(null)
   }
 
@@ -75,21 +81,24 @@ export const ReservationListDataResult = ({
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-center">
               <span
-                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  reservationData.reservation_status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : reservationData.reservation_status === 'approved'
-                      ? 'bg-green-100 text-green-800'
-                      : reservationData.reservation_status === 'cancelled'
-                        ? 'bg-red-100 text-red-800'
-                        : reservationData.reservation_status === 'logout'
-                          ? 'bg-yellow-100 text-yellow-800'
+                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${reservationData.reservation_status === 'pending'
+                  ? 'bg-yellow-100 text-yellow-800'
+                  : reservationData.reservation_status === 'approved'
+                    ? 'bg-green-100 text-green-800'
+                    : reservationData.reservation_status === 'cancelled'
+                      ? 'bg-red-100 text-red-800'
+                      : reservationData.reservation_status === 'logout'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : reservationData.reservation_status === 'incomplete'
+                          ? 'bg-red-100 text-red-800'
                           : reservationData.reservation_status === 'complete'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-gray-100 text-gray-800'
-                }`}
+                  }`}
               >
-                {reservationData.reservation_status.charAt(0).toUpperCase() +
+                {reservationData.reservation_status === 'approved'
+                  ? 'Waiting for Arrival'
+                  : reservationData.reservation_status.charAt(0).toUpperCase() +
                   reservationData.reservation_status.slice(1)}
               </span>
             </td>
@@ -115,6 +124,13 @@ export const ReservationListDataResult = ({
           {/* cancelled reservation modal part */}
           <ViewCancelledReservationModal
             isOpen={isCancelledModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+
+          {/* waiting arrival reservation modal part */}
+          <WaitingArrivalModal
+            isOpen={isWaitingModalOpen}
             onClose={handleCloseModal}
             reservationData={selectedReservation}
           />
