@@ -5,6 +5,9 @@ import { ReservationData } from '@/types/types'
 import { Button } from '@/components/common/Button'
 import { ViewUserReservationData } from '@/layout/user/sidebar/component/ViewUserReservationData'
 import { CancelledReservationModal } from '@/layout/user/sidebar/component/CancelledReservationModal'
+import { ApprovedReservationModal } from '@/layout/user/sidebar/component/ApprovedReservationModal'
+import { CompleteReservationModal } from '@/layout/admin/sidebar/component/CompleteReservationModal'
+import { IncompleteReservationModal } from '@/layout/admin/sidebar/component/IncompleteReservationModal'
 
 interface UserReservationDataResultProps {
   reservationDataResult: ReservationData[]
@@ -18,6 +21,9 @@ export const UserReservationDataResult = ({
   const [selectedReservation, setSelectedReservation] = useState<ReservationData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false)
+  const [isApprovedModalOpen, setIsApprovedModalOpen] = useState(false)
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false)
+  const [isIncompleteModalOpen, setIsIncompleteModalOpen] = useState(false)
 
   const handleOpenModal = (reservation: ReservationData) => {
     if (reservation.reservation_status === 'pending') {
@@ -26,12 +32,24 @@ export const UserReservationDataResult = ({
     } else if (reservation.reservation_status === 'cancelled') {
       setSelectedReservation(reservation)
       setIsCancelledModalOpen(true)
+    } else if (reservation.reservation_status === 'approved') {
+      setSelectedReservation(reservation)
+      setIsApprovedModalOpen(true)
+    } else if (reservation.reservation_status === 'complete') {
+      setSelectedReservation(reservation)
+      setIsCompleteModalOpen(true)
+    } else if (reservation.reservation_status === 'incomplete') {
+      setSelectedReservation(reservation)
+      setIsIncompleteModalOpen(true)
     }
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setIsCancelledModalOpen(false)
+    setIsApprovedModalOpen(false)
+    setIsCompleteModalOpen(false)
+    setIsIncompleteModalOpen(false)
     setSelectedReservation(null)
   }
 
@@ -110,6 +128,25 @@ export const UserReservationDataResult = ({
           />
           <CancelledReservationModal
             isOpen={isCancelledModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+          <ApprovedReservationModal
+            isOpen={isApprovedModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+
+          {/* complete reservation modal part */}
+          <CompleteReservationModal
+            isOpen={isCompleteModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+
+          {/* incomplete reservation modal part */}
+          <IncompleteReservationModal
+            isOpen={isIncompleteModalOpen}
             onClose={handleCloseModal}
             reservationData={selectedReservation}
           />
