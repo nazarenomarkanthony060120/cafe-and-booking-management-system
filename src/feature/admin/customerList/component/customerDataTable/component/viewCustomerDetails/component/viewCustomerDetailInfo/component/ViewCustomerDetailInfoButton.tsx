@@ -22,8 +22,6 @@ export const ViewCustomerDetailInfoButton = ({
 }: ViewCustomerDetailInfoButtonProps) => {
   const queryClient = useQueryClient()
 
-  console.log(customerData?.action_status)
-
   const formatDateTime = (date: Date) => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -40,32 +38,62 @@ export const ViewCustomerDetailInfoButton = ({
       const currentDate = new Date()
       const formattedTime = formatDateTime(currentDate)
 
-      const q = query(collection(db, 'customers'), where('pcNumber', '==', customerData.pcNumber))
-      const querySnapshot = await getDocs(q)
+      const pcNumbers = Array.isArray(customerData.pcNumber)
+        ? customerData.pcNumber
+        : customerData.pcNumber.split(',').map((num) => num.trim())
+      let totalPayment = 0
+      let monitorTypes: string[] = []
 
-      if (!querySnapshot.empty) {
-        const docRef = querySnapshot.docs[0].ref
+      for (const pcNumber of pcNumbers) {
+        const pcsQuery = query(collection(db, 'pcs_list'), where('pcNumber', '==', pcNumber))
+        const pcsSnapshot = await getDocs(pcsQuery)
+        if (pcsSnapshot.empty) {
+          console.error(`PC ${pcNumber} does not exist in pcs_list collection`)
+          continue
+        }
+        const pcDoc = pcsSnapshot.docs[0]
+        const monitorType = pcDoc.data().monitorType || 'Normal'
+        monitorTypes.push(monitorType)
+
         const payment = PaymentCalculation({
           startTime: customerData.start_time,
           endTime: formattedTime,
-          monitorType: customerData.monitorType,
+          monitorType: monitorType,
         })
-
-        await updateDoc(docRef, {
-          end_time: formattedTime,
-          action_status: 'Waiting for Payment',
-          updated_date: formattedTime,
-          payment: payment,
-        })
-
-        queryClient.invalidateQueries({ queryKey: ['customers'] })
+        totalPayment += payment
       }
 
+      const monitorTypeField = monitorTypes.length > 1 ? monitorTypes : monitorTypes[0]
+
+      const customerQuery = query(
+        collection(db, 'customers'),
+        where('pcNumber', 'array-contains-any', pcNumbers)
+      )
+      const customerSnapshot = await getDocs(customerQuery)
+      if (customerSnapshot.empty) {
+        console.error(`No customer document found for pcNumbers: ${pcNumbers.join(', ')}`)
+      } else {
+        for (const docSnap of customerSnapshot.docs) {
+          try {
+            await updateDoc(docSnap.ref, {
+              end_time: formattedTime,
+              action_status: 'Waiting for Payment',
+              updated_date: formattedTime,
+              payment: totalPayment,
+              monitorType: monitorTypeField,
+            })
+          } catch (updateError) {
+            console.error(`Failed to update customer doc for pcNumbers: ${pcNumbers.join(', ')}`, updateError)
+          }
+        }
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['customers'] })
       setIsLoading(false)
       onClose()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to update status:', error)
-      alert('Failed to update status. Please try again.')
+      alert('Failed to update status. Please try again.\n' + (error && error.message ? error.message : error))
       setIsLoading(false)
     }
   }
@@ -73,11 +101,10 @@ export const ViewCustomerDetailInfoButton = ({
   return (
     <div className="space-y-4">
       <div
-        className={`grid gap-4 mt-6 ${
-          customerData?.action_status === 'Completed'
-            ? 'grid-cols-1 justify-items-center'
-            : 'grid-cols-2'
-        }`}
+        className={`grid gap-4 mt-6 ${customerData?.action_status === 'Completed'
+          ? 'grid-cols-1 justify-items-center'
+          : 'grid-cols-2'
+          }`}
       >
         {customerData?.action_status !== 'Completed' && (
           <button
