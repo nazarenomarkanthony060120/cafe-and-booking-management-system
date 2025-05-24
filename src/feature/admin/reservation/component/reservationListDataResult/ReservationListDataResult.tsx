@@ -6,6 +6,8 @@ import { Button } from '@/components/common/Button'
 import { ViewReservationDataModal } from '@/layout/admin/sidebar/component/ViewReservationDataModal'
 import { ViewCancelledReservationModal } from '@/layout/admin/sidebar/component/ViewCancelledReservationModal'
 import { WaitingArrivalModal } from '@/layout/admin/sidebar/component/WaitinArrivalModal'
+import { CompleteReservationModal } from '@/layout/admin/sidebar/component/CompleteReservationModal'
+import { IncompleteReservationModal } from '@/layout/admin/sidebar/component/IncompleteReservationModal'
 
 interface ReservationListDataResultProps {
   reservationData: ReservationData[]
@@ -20,6 +22,8 @@ export const ReservationListDataResult = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCancelledModalOpen, setIsCancelledModalOpen] = useState(false)
   const [isWaitingModalOpen, setIsWaitingModalOpen] = useState(false)
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false)
+  const [isIncompleteModalOpen, setIsIncompleteModalOpen] = useState(false)
 
   const handleOpenModal = (reservation: ReservationData) => {
     if (reservation.reservation_status === 'pending') {
@@ -31,6 +35,12 @@ export const ReservationListDataResult = ({
     } else if (reservation.reservation_status === 'approved') {
       setSelectedReservation(reservation)
       setIsWaitingModalOpen(true)
+    } else if (reservation.reservation_status === 'complete') {
+      setSelectedReservation(reservation)
+      setIsCompleteModalOpen(true)
+    } else if (reservation.reservation_status === 'incomplete') {
+      setSelectedReservation(reservation)
+      setIsIncompleteModalOpen(true)
     }
   }
 
@@ -38,6 +48,8 @@ export const ReservationListDataResult = ({
     setIsModalOpen(false)
     setIsCancelledModalOpen(false)
     setIsWaitingModalOpen(false)
+    setIsCompleteModalOpen(false)
+    setIsIncompleteModalOpen(false)
     setSelectedReservation(null)
   }
 
@@ -131,6 +143,20 @@ export const ReservationListDataResult = ({
           {/* waiting arrival reservation modal part */}
           <WaitingArrivalModal
             isOpen={isWaitingModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+
+          {/* complete reservation modal part */}
+          <CompleteReservationModal
+            isOpen={isCompleteModalOpen}
+            onClose={handleCloseModal}
+            reservationData={selectedReservation}
+          />
+
+          {/* incomplete reservation modal part */}
+          <IncompleteReservationModal
+            isOpen={isIncompleteModalOpen}
             onClose={handleCloseModal}
             reservationData={selectedReservation}
           />
